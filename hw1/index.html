@@ -50,8 +50,22 @@
   <div>
 
     <h2 align="middle">Overview</h2>
-    <p>Give a high-level overview of what you implemented in this homework Think about what you've built as a whole.
-      Share your thoughts on what interesting things you've learned from completing the homework.</p>
+    <p>
+      In this homework, we implement rasterization and sampling methods.
+      For rasterization, the focus was on optimizing algorithms for rendering
+      triangles and introducing antialiasing. We present an optimized algorithm
+      that significantly improves computational efficiency for determining pixel
+      inclusion within triangles, which provides notable performance improvements,
+      especially with higher sample rates. Supersampling is introduced to combat
+      aliasing, providing smoother edges and improved image quality. Additionally,
+      we adhere to OpenGL edge rules to ensure accurate rendering.
+
+      In sampling, we implement barycentric coordinates to interpolate values
+      within triangles. We also demonstrate the advantages of bilinear interpolation
+      over nearest neighbor sampling for texture quality. We introduce level sampling with
+      mipmaps to reduce aliasing in texture mapping and demonstrate
+      a tradeoff between runtime, memory, and antialiasing capabilities.
+    </p>
 
     <h2 align="middle">Section I: Rasterization</h2>
 
@@ -92,7 +106,9 @@
       which significantly reduces the computation. Furthermore, the bounding box of a triangle is at least twice the
       area of the triangle itself,
       so we expect the unoptimized algorithm to resolve at least twice as many pixels as the optimized algorithm, which
-      only deals with pixels in the triangle.
+      only deals with pixels in the triangle. From a systems perspective, we also expect a speedup because
+      filling in a contiguous block of data in one step should be faster than looping through each pixel and evaluating
+      a conditional.
     </p>
 
     <p>Below we include tables of timings for relevant SVG files. On the device these were tested on, we observed
@@ -105,26 +121,31 @@
           <th>SVG</th>
           <th>Unoptimized Clock Ticks</th>
           <th>Optimized Clock Ticks</th>
+          <th>Speedup Factor</th>
         </tr>
         <tr>
           <td>test3.svg</td>
           <td align="middle">13,812</td>
           <td align="middle">3,687</td>
+          <td align="middle">3.75</td>
         </tr>
         <tr>
           <td>test4.svg</td>
           <td align="middle">924</td>
           <td align="middle">224</td>
+          <td align="middle">4.13</td>
         </tr>
         <tr>
           <td>test5.svg</td>
           <td align="middle">2,527</td>
           <td align="middle">358</td>
+          <td align="middle">7.06</td>
         </tr>
         <tr>
           <td>test6.svg</td>
           <td align="middle">1,632</td>
           <td align="middle">338</td>
+          <td align="middle">4.83</td>
         </tr>
       </table>
     </div>
@@ -139,31 +160,36 @@
           <th>SVG</th>
           <th>Unoptimized Clock Ticks</th>
           <th>Optimized Clock Ticks</th>
+          <th>Speedup Factor</th>
         </tr>
         <tr>
           <td>test3.svg</td>
           <td align="middle">158,209</td>
           <td align="middle">13,043</td>
+          <td align="middle">12.1</td>
         </tr>
         <tr>
           <td>test4.svg</td>
           <td align="middle">13,589</td>
           <td align="middle">2,573</td>
+          <td align="middle">5.28</td>
         </tr>
         <tr>
           <td>test5.svg</td>
           <td align="middle">39,948</td>
           <td align="middle">7,043</td>
+          <td align="middle">5.67</td>
         </tr>
         <tr>
           <td>test6.svg</td>
           <td align="middle">20,305</td>
           <td align="middle">4,919</td>
+          <td align="middle">4.17</td>
         </tr>
       </table>
     </div>
 
-    <p>Depending on the shapes of rasterized triangles, we observe speedup of at least 4x and up to 10x.</p>
+    <p>The variability in speedups is due to the shapes of the triangles.</p>
 
     <p>We can also observe adherence to the OpenGL edge rules since we are inclusive on the left and exclusive on the
       right for intervals on both axes involving coordinates
