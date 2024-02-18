@@ -41,7 +41,7 @@
 
 <h1 align="middle">CS 184: Computer Graphics and Imaging, Spring 2018</h1>
 <h1 align="middle">Project 2: Mesh Edit</h1>
-<h2 align="middle">YOUR NAME</h2>
+<h2 align="middle">Preston Fu and Ralph Cao</h2>
 
 <br><br>
 
@@ -67,7 +67,9 @@
   Bézier curve (make a copy). Repeat the following process recursively: for each iteration, 
   linearly interpolate between adjacent control points. That is, with some control
 	points $\{p_i\}_{i=1}^n$, one iteration of the update will be $\{(1-t)p_i + tp_{i+1}\}_{i=1}^{n-1}$.
-
+	In the code, this is implemented as `BezierCurve::evaluateStep`.
+</p>
+<p>
 	Eventually, we will have one point, which is the point corresponding to $t$.
 	Treat this as a function of $t \in [0, 1]$ to obtain the Bezier curves.
 </p>
@@ -139,7 +141,14 @@
   Briefly explain how de Casteljau algorithm extends to Bezier surfaces and how you implemented it in order to evaluate Bezier surfaces.
 </b>
 <p>
-    YOUR RESPONSE GOES HERE
+	Evaluating Bezier surfaces can be done in a separable manner. That is, run 1D de Casteljau
+	to interpolate between adjacent points in the $x$ direction for each fixed $y$ value,
+	giving control points. Then use 1D de Casteljau using these control points to interpolate
+	in the $y$ direction.
+</p>
+<p>
+	In implementation, the approach is quite similar to the 1D case. We replaced
+	`Vector2D` with `Vector3D` and used the two-step evaluation method described above.
 </p>
 <br>
 
@@ -208,7 +217,27 @@
   Briefly explain how you implemented the edge split operation and describe any interesting implementation / debugging tricks you have used.
 </b>
 <p>
-    YOUR RESPONSE GOES HERE
+	Our implementation is shown in the figure. The input edge `e0` has associated
+	halfedges 1 and 2, which are on faces A and B, respectively. To preserve
+	some elements of our original setup, we maintain that 1 and 2 are on A and B,
+	but change most of the rest of this setup.
+
+	<div align="middle">
+	<figure>
+		<img src="images/edge-split-start.png" width="300px" />
+		<img src="images/edge-split-end.png" width="400px" />
+		<figcaption>Two adjacent triangles before (left) and after (right) an edge split.</figcaption>
+	</figure>
+	</div>
+
+	Specifically, our process looks like:
+	<ol>
+		<li>Create new edges.</li>
+		<li>Update halfedges' `twin` and `next` attributes.</li>
+		<li>Update edges' halfedges.</li>
+		<li>Update faces' halfedges and halfedges' faces.</li>
+		<li>Update vertices.</li>
+	</ol>
 </p>
 <br>
 
@@ -235,7 +264,7 @@
     Write about your eventful debugging journey, if you have experienced one.
 </b>
 <p>
-    YOUR RESPONSE GOES HERE
+	We didn't need to debug! Our first implementation was correct.
 </p>
 <br>
 
@@ -254,7 +283,29 @@
   Briefly explain how you implemented the loop subdivision and describe any interesting implementation / debugging tricks you have used.
 </b>
 <p>
-    YOUR RESPONSE GOES HERE
+	We follow the algorithm described in the spec:
+	<ol>
+		<li>Update the `newPosition` of each vertex in the mesh as a weighted average of the current position and neighboring vertices' positions.</li>
+		<li>
+			Each edge will get split. Update the `newPosition` of each edge in the mesh, which is a weighted average of the positions
+			of the vertices in the triangles containing that edge.
+		</li>
+		<li>
+			Split each edge. We store the number of required edges to split on, so that we do not split the new edges
+			we just created (which would result in an infinite loop).
+		</li>
+		<li>
+			Flip every new edge that is between one new vertex and one old vertex.
+		</li>
+		<li>
+			Update all vertex positions.
+		</li>
+	</ol>
+
+	Originally, after subdivision, our mesh had the correct shape but had holes. We commented out some lines
+	of code and found that the problem was in edge flips. It turned out that our problem was with (3),
+	and storing the number of edges was sufficient. (We realized during this process that setting
+	a variable as a pointer to the end of the list didn't work since it got updated dynamically.)
 </p>
 <br>
 
@@ -272,8 +323,12 @@
   Load dae/cube.dae. Perform several iterations of loop subdivision on the cube. Notice that the cube becomes slightly asymmetric after repeated subdivisions. Can you pre-process the cube with edge flips and splits so that the cube subdivides symmetrically? Document these effects and explain why they occur. Also explain how your pre-processing helps alleviate the effects.
 </b>
 <p>
-    YOUR RESPONSE GOES HERE
+	Sharp edges and corners get rounded out. This is no surprise because the loop subdivision weighting
+	will pull these sharp components towards the center of the cube due to the weighted averaging.
 </p>
+<h3 style="color: red">
+	do the thing
+</h3>
 <br>
 
 
