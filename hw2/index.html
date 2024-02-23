@@ -159,9 +159,9 @@
 <b>
   Show a screenshot of bez/teapot.bez (not .dae) evaluated by your implementation.
 </b>
-<p>
-    YOUR RESPONSE GOES HERE
-</p>
+<div align="middle">
+  <img src="images/task2.png" align="middle" width="50%">
+</div>
 <br>
 
 
@@ -173,7 +173,10 @@
   Briefly explain how you implemented the area-weighted vertex normals.
 </b>
 <p>
-    YOUR RESPONSE GOES HERE
+    For each triangle, we traversed all of the edges of adjacent polygons and computed the sum the cross products of each adjacent pair of edges. For a given polygon, 
+    calculating the sum of the cross products of each adjacent pair of edges would return a vector that is perpendicular to the plane of the polygon with magnitude 
+    equal to twice the area of the polygon. In this way, assuming each polygon is planar, calculating this sum across all adjacent polygons would give us an area-weighted sum,
+    which would give us the area-weighted vertex normal once normalized.
 </p>
 <br>
 
@@ -181,9 +184,21 @@
 <b>
   Show screenshots of dae/teapot.dae (not .bez) comparing teapot shading with and without vertex normals. Use <kbd>Q</kbd> to toggle default flat shading and Phong shading.
 </b>
-<p>
-    YOUR RESPONSE GOES HERE
-</p>
+<div align="middle">
+  <table style="width=100%">
+    <tr>
+      <td align="middle">
+        <img src="images/task3_a.png" align="middle" width="400px" />
+        <figcaption>Flat Shading</figcaption>
+      </td>
+      <td align="middle">
+        <img src="images/task3_b.png" align="middle" width="400px" />
+        <figcaption align="middle">Phong Shading</figcaption>
+      </td>
+    </tr>
+    <br>
+  </table>
+</div>
 <br>
 
 
@@ -200,9 +215,21 @@
 <b>
   Show screenshots of the teapot before and after some edge flips.
 </b>
-<p>
-    YOUR RESPONSE GOES HERE
-</p>
+<div align="middle">
+  <table style="width=100%">
+    <tr>
+      <td align="middle">
+        <img src="images/task4_a.png" align="middle" width="400px" />
+        <figcaption>Before Flips</figcaption>
+      </td>
+      <td align="middle">
+        <img src="images/task4_b.png" align="middle" width="400px" />
+        <figcaption align="middle">After Flips</figcaption>
+      </td>
+    </tr>
+    <br>
+  </table>
+</div>
 <br>
 
 
@@ -248,18 +275,42 @@
 <b>
     Show screenshots of a mesh before and after some edge splits. 
 </b>
-<p>
-    YOUR RESPONSE GOES HERE
-</p>
+<div align="middle">
+  <table style="width=100%">
+    <tr>
+      <td align="middle">
+        <img src="images/task5_a.png" align="middle" width="400px" />
+        <figcaption>Before Splits</figcaption>
+      </td>
+      <td align="middle">
+        <img src="images/task5_b.png" align="middle" width="400px" />
+        <figcaption align="middle">After Splits</figcaption>
+      </td>
+    </tr>
+    <br>
+  </table>
+</div>
 <br>
 
 
 <b>
     Show screenshots of a mesh before and after a combination of both edge splits and edge flips.
 </b>
-<p>
-    YOUR RESPONSE GOES HERE
-</p>
+<div align="middle">
+  <table style="width=100%">
+    <tr>
+      <td align="middle">
+        <img src="images/task5_c.png" align="middle" width="400px" />
+        <figcaption>Before Splits and Flips</figcaption>
+      </td>
+      <td align="middle">
+        <img src="images/task5_d.png" align="middle" width="400px" />
+        <figcaption align="middle">After Splits and Flips</figcaption>
+      </td>
+    </tr>
+    <br>
+  </table>
+</div>
 <br>
 
 
@@ -275,9 +326,21 @@
 <b>
     If you have implemented support for boundary edges, show screenshots of your implementation properly handling split operations on boundary edges.
 </b>
-<p>
-    YOUR RESPONSE GOES HERE
-</p>
+<div align="middle">
+  <table style="width=100%">
+    <tr>
+      <td align="middle">
+        <img src="images/task5_e.png" align="middle" width="400px" />
+        <figcaption>Before Splits</figcaption>
+      </td>
+      <td align="middle">
+        <img src="images/task5_f.png" align="middle" width="400px" />
+        <figcaption align="middle">After Splits</figcaption>
+      </td>
+    </tr>
+    <br>
+  </table>
+</div>
 <br>
 
 
@@ -354,8 +417,33 @@
     If you have implemented any extra credit extensions, explain what you did and document how they work with screenshots.
 </b>
 <p>
-    YOUR RESPONSE GOES HERE
+    We additionally implemented $\sqrt{3}-$subdivision, and implemented boundary support for both loop subdivision and $\sqrt{3}-$subdivision.
 </p>
+<div align="middle">
+  <table style="width=100%">
+    <tr>
+      <td align="middle">
+        <img src="images/task6_ec_a.png" align="middle" width="500px" />
+        <figcaption>Before Subdivision</figcaption>
+      </td>
+      <td align="middle">
+        <img src="images/task6_ec_b.png" align="middle" width="500px" />
+        <figcaption align="middle">After Loop Subdivision</figcaption>
+      </td>
+    </tr>
+    <tr>
+      <td align="middle">
+        <img src="images/task6_ec_c.png" align="middle" width="500px" />
+        <figcaption align="middle">After $\sqrt{3}-$Subdivision Once</figcaption>
+      </td>
+      <td align="middle">
+        <img src="images/task6_ec_d.png" align="middle" width="500px" />
+        <figcaption align="middle">After $\sqrt{3}-$Subdivision Twice</figcaption>
+      </td>
+    </tr>
+    <br>
+  </table>
+</div>
 <br>
 
 
