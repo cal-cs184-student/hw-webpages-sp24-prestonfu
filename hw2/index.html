@@ -79,50 +79,51 @@
 <b>
   Take a look at the provided .bzc files and create your own Bezier curve with 6 control points of your choosing. Use this Bezier curve for your screenshots below.
 </b>
-<p>
-    YOUR RESPONSE GOES HERE
-</p>
-<!-- Example of including a single figure -->
-<div align="middle">
-  <img src="images/your_file.png" align="middle" width="50%">
-</div>
-<br>
-
+<p></p>
 <b>
   Show screenshots of each step / level of the evaluation from the original control points down to the final evaluated point. Press <kbd>E</kbd> to step through. Toggle <kbd>C</kbd> to show the completed Bezier curve as well.
 </b>
-<!-- Example of including multiple figures -->
+<p></p>
+<!-- Example of including a single figure -->
+
 <div align="middle">
-  <table style="width:100%">
-    <tr align="center">
-      <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>Level 0</figcaption>
+  <table style="width=100%">
+    <tr>
+      <td align="middle">
+        <img src="images/1/0.png" align="middle" width="250px" />
+        <figcaption>Level 0 (control points)</figcaption>
       </td>
-      <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
+      <td align="middle">
+        <img src="images/1/1.png" align="middle" width="250px" />
         <figcaption>Level 1</figcaption>
       </td>
-    </tr>
-    <br>
-    <tr align="center">
-      <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
+      <td align="middle">
+        <img src="images/1/2.png" align="middle" width="250px" />
         <figcaption>Level 2</figcaption>
       </td>
-      <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
+    </tr>
+    <tr>
+      <td align="middle">
+        <img src="images/1/3.png" align="middle" width="250px" />
         <figcaption>Level 3</figcaption>
       </td>
-    </tr>
-    <br>
-    <tr align="center">
-      <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
+      <td align="middle">
+        <img src="images/1/4.png" align="middle" width="250px" />
         <figcaption>Level 4</figcaption>
+      </td>
+      <td align="middle">
+        <img src="images/1/5.png" align="middle" width="250px" />
+        <figcaption>Level 5 (one point)</figcaption>
       </td>
     </tr>
   </table>
+</div>
+<br>
+
+<p>The final curve is as shown.</p>
+
+<div align="middle">
+  <img src="images/1/curve.png" align="middle" width="250px">
 </div>
 <br>
 
@@ -130,9 +131,11 @@
 <b>
   Show a screenshot of a slightly different Bezier curve by moving the original control points around and modifying the parameter \(t\) via mouse scrolling.
 </b>
-<p>
-    YOUR RESPONSE GOES HERE
-</p>  
+<br>
+<div align="middle">
+  <img src="images/1/another-curve.png" align="middle" width="250px">
+</div>
+<br>
 <br>
 
 
@@ -148,7 +151,7 @@
 </p>
 <p>
 	In implementation, the approach is quite similar to the 1D case. We replaced
-	`Vector2D` with `Vector3D` and used the two-step evaluation method described above.
+	<kbd>Vector2D</kbd> with <kbd>Vector3D</kbd> and used the two-step evaluation method described above.
 </p>
 <br>
 
@@ -217,7 +220,7 @@
   Briefly explain how you implemented the edge split operation and describe any interesting implementation / debugging tricks you have used.
 </b>
 <p>
-	Our implementation is shown in the figure. The input edge `e0` has associated
+	Our implementation is shown in the figure. The input edge <kbd>e0</kbd> has associated
 	halfedges 1 and 2, which are on faces A and B, respectively. To preserve
 	some elements of our original setup, we maintain that 1 and 2 are on A and B,
 	but change most of the rest of this setup.
@@ -233,7 +236,7 @@
 	Specifically, our process looks like:
 	<ol>
 		<li>Create new edges.</li>
-		<li>Update halfedges' `twin` and `next` attributes.</li>
+		<li>Update halfedges' <kbd>twin</kbd> and <kbd>next</kbd> attributes.</li>
 		<li>Update edges' halfedges.</li>
 		<li>Update faces' halfedges and halfedges' faces.</li>
 		<li>Update vertices.</li>
@@ -285,9 +288,9 @@
 <p>
 	We follow the algorithm described in the spec:
 	<ol>
-		<li>Update the `newPosition` of each vertex in the mesh as a weighted average of the current position and neighboring vertices' positions.</li>
+		<li>Update the <kbd>newPosition</kbd> of each vertex in the mesh as a weighted average of the current position and neighboring vertices' positions.</li>
 		<li>
-			Each edge will get split. Update the `newPosition` of each edge in the mesh, which is a weighted average of the positions
+			Each edge will get split. Update the <kbd>newPosition</kbd> of each edge in the mesh, which is a weighted average of the positions
 			of the vertices in the triangles containing that edge.
 		</li>
 		<li>
@@ -314,23 +317,38 @@
   Take some notes, as well as some screenshots, of your observations on how meshes behave after loop subdivision. What happens to sharp corners and edges? Can you reduce this effect by pre-splitting some edges?
 </b>
 <p>
-    YOUR RESPONSE GOES HERE
+	Sharp edges and corners get rounded out. This is no surprise because the loop subdivision weighting
+	will pull these sharp components towards the center of the cube due to the weighted averaging.
+  We have alleviated this effect by splitting each edge into 4.
 </p>
-<br>
+<div align="middle">
+	<figure>
+		<img src="images/6/cube-spam.png" width="300px" />
+		<figcaption>Cube with 48 edge splits.</figcaption>
+	</figure>
+</div>
+<p>
+  Indeed, we can compare to the figures in the following question (where we have only split on the faces)
+  and observe that the edges and overall cube shape are much more pronounced with sharp edge splits.
+</p>
 
 
 <b>
   Load dae/cube.dae. Perform several iterations of loop subdivision on the cube. Notice that the cube becomes slightly asymmetric after repeated subdivisions. Can you pre-process the cube with edge flips and splits so that the cube subdivides symmetrically? Document these effects and explain why they occur. Also explain how your pre-processing helps alleviate the effects.
 </b>
 <p>
-	Sharp edges and corners get rounded out. This is no surprise because the loop subdivision weighting
-	will pull these sharp components towards the center of the cube due to the weighted averaging.
+  The problem with the original mesh is that the edges across each face are not symmetric,
+  causing the subdivision process to produce an asymmetric mesh. Pre-splitting the edges
+  on each face resolves this:
 </p>
-<h3 style="color: red">
-	do the thing
-</h3>
-<br>
-
+<div align="middle">
+	<figure>
+		<img src="images/6/cube-og.png" width="300px" />
+		<img src="images/6/cube-split.png" width="300px" />
+		<img src="images/6/cube-final.png" width="300px" />
+		<figcaption>Original cube mesh (left), after splitting (middle), and after loop subdivision (right).</figcaption>
+	</figure>
+</div>
 
 <b>
     If you have implemented any extra credit extensions, explain what you did and document how they work with screenshots.
