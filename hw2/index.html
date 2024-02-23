@@ -49,7 +49,17 @@
 
 <h2 align="middle">Overview</h2>
 <p>
-    YOUR RESPONSE GOES HERE
+  In this homework, we implement Bezier curves/surfaces and mesh operations.
+  For Bezier curves, we implement de Casteljau's algorithm with a step-by-step
+  method in 2D and dimension-separable approach in 3D. For triangle meshes,
+  we implement area-weighted vertex normals, with the motivation that they
+  enable better shading for smooth surfaces under the Phong model. We also
+  implement several mesh operations: edge flip, edge split, loop subdivision (i.e.
+  split edges and form new triangles from the existing incident ones),
+  and $\sqrt 3$-subdivision (i.e. introduce a centroid face split operation as well as
+  a new keybind for debugging, and flip edges). For each of these operations, we discuss our approach
+  (the ways in which we optimized our implementation to change as few
+  pointers as possible) and debugging strategies.
 </p>
 <br>
 
@@ -159,6 +169,7 @@
 <b>
   Show a screenshot of bez/teapot.bez (not .dae) evaluated by your implementation.
 </b>
+<p></p>
 <div align="middle">
   <img src="images/task2.png" align="middle" width="50%">
 </div>
@@ -268,6 +279,7 @@
 		<li>Update faces' halfedges and halfedges' faces.</li>
 		<li>Update vertices.</li>
 	</ol>
+  Our first implementation was bug-free, so no debugging was required.
 </p>
 <br>
 
