@@ -204,10 +204,12 @@
   Briefly explain how you implemented the edge flip operation and describe any interesting implementation / debugging tricks you have used.
 </b>
 <p>
-    YOUR RESPONSE GOES HERE
+    We drew out an edge flip on paper and identified which pointers needed to be moved. Since the amount of pointer movement in an edge flip 
+    is relatively small compared to the other operations, we decided to write an ad hoc algorithm to move pointers without needing to store or 
+    name any pointers. To do this, we made sure to keep the halfedge to halfedge operations for the end so we could correctly traverse to vertices,
+    faces, and edges as needed. We ended up with a set of 7 paired operations, which needed minimal testing and debugging to ensure correctness.
 </p>
 <br>
-
 
 <b>
   Show screenshots of the teapot before and after some edge flips.
@@ -234,7 +236,7 @@
     Write about your eventful debugging journey, if you have experienced one.
 </b>
 <p>
-    YOUR RESPONSE GOES HERE
+    Minimal debugging was needed.
 </p>
 <br>
 
@@ -265,6 +267,9 @@
 		<li>Update faces' halfedges and halfedges' faces.</li>
 		<li>Update vertices.</li>
 	</ol>
+
+  For the boundary condition, we essentially made an entirely separate branch in the splitEdge function and followed the same process to efficiently determine
+  updates.
 </p>
 <br>
 
@@ -399,7 +404,85 @@
     If you have implemented any extra credit extensions, explain what you did and document how they work with screenshots.
 </b>
 <p>
-    We additionally implemented $\sqrt{3}-$subdivision, and implemented boundary support for both loop subdivision and $\sqrt{3}-$subdivision.
+    We additionally implemented $\sqrt{3}-$subdivision, and implemented boundary support for both loop subdivision and $\sqrt{3}-$subdivision. $\sqrt{3}-$subdivision 
+    can be accessed with the 'p' keybind, and we added keybind support for face splitting with 's' if a face is selected.
+</p>
+<p>
+    We implemented $\sqrt{3}-$subdivision using the provided <a href="https://www.graphics.rwth-aachen.de/media/papers/sqrt31.pdf">paper</a>. This subdivision scheme 
+    relies on performing face splitting of triangles, which puts a new vertex at the mean of the triangle vertices and creates three new edges to connect them. 
+    Then, all pre-existing edges are flipped to create a roughly even triangular grid that is rotated 30 degrees from the original grid. Existing non-boundary vertices 
+    are weighted by \[v'=(1-\alpha_n)v+\alpha_n \frac{1}{n}\sum_{i=1}^n v_i\] where $v$ is the current position of the vertex, $v'$ is the new position of the vertex, $n$ is the 
+    valence of the vertex, and $v_1,\dots,v_n$ are the positions of the neighbors of this vertex. We define the constant $\alpha_n$ as \[\alpha_n=\frac{4-2\cos(\frac{2\pi}{n})}{9}.\]
+    All new vertices can be left where they were, as an average of the positions of the vertices on the triangle they belong to.
+</p>
+<p>
+    Overall, we follow the following algorithm:
+    <ol>
+      <li>Update the `newPosition` of each vertex in the mesh as a weighted average of the current position and neighboring vertices' positions.</li>
+      <li>
+        Split each face. We store the number of required faces to split, so that we do not split the new faces
+        we just created (which would result in an infinite loop). Mark each new vertex as new.
+      </li>
+      <li>
+        Flip every edge that is between two old vertices.
+      </li>
+      <li>
+        Update all vertex positions.
+      </li>
+    </ol>
+</p>
+<p>
+    Below, we show $\sqrt{3}-$subdivision twice to demonstrate the rotating nature of the subdivision, and we show the loop subdivision for comparison. In general, we can
+    observe that in loop subdivision each original triangle is split into four after one iteration, and in $\sqrt{3}-$subdivision each original triangle is split into nine
+    after two iterations.
+</p>
+<div align="middle">
+  <table style="width=100%">
+    <tr>
+      <td align="middle">
+        <img src="images/task6_ec_e.png" align="middle" width="500px" />
+        <figcaption>Before Subdivision</figcaption>
+      </td>
+      <td align="middle">
+        <img src="images/task6_ec_f.png" align="middle" width="500px" />
+        <figcaption align="middle">After Loop Subdivision</figcaption>
+      </td>
+    </tr>
+    <tr>
+      <td align="middle">
+        <img src="images/task6_ec_g.png" align="middle" width="500px" />
+        <figcaption align="middle">After $\sqrt{3}-$Subdivision Once</figcaption>
+      </td>
+      <td align="middle">
+        <img src="images/task6_ec_h.png" align="middle" width="500px" />
+        <figcaption align="middle">After $\sqrt{3}-$Subdivision Twice</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<p>
+  For loop subdivision boundary support, we added a few edge conditions for boundary vertices. In our initial loop over our vertices, we first find the sum of adjacent 
+  boundary vertices for all existing boundary vertices. Then, for existing vertices we use the formula \[v'=\frac{1}{8}v_1+\frac{1}{8}v_2+\frac{3}{4}v\] 
+  where $v$ is the current position of the vertex, $v'$ is the new position of the vertex, and $v_1$ and $v_2$ are the positions of the neighbors of this vertex.
+  For new vertices on the boundary, we simply average the positions of the vertices at the end of the edge. This helps boundary shapes to round out as subdivision
+  iterations are performed, which can be observed in the provided figures.
+</p>
+<p>
+  For $\sqrt{3}-$subdivision support, we needed a slightly more significant modification to the algorithm. Note that in the current form of the algorithm, only faces
+  are split, so any boundary edges and vertices remain unmodified and remain where they are. The behavior we observe in all other edges is roughly to split 
+  into three edges every two subdivision iterations (hence the $\sqrt{3}$ in the name), so to extend this to boundary edges we can trisect each boundary edge 
+  at every second subdivision iteration. We then apply the following weights/stencil: 
+  \begin{align*}
+    v'_{3i-1}&=\frac{1}{27}(10v_{i-1}+16v_i+v_{i+1}) \\
+    v'_{3i}&=\frac{1}{27}(4v_{i-1}+19v_i+4v_{i+1}) \\
+    v'_{3i+1}&=\frac{1}{27}(v_{i-1}+16v_i+10v_{i+1})
+  \end{align*} where $v_i$ is the current vertex position, $v_{i-1}$ and $v_{i+1}$ are the positions of the neighbors of $v_i$ on the boundary, $v'_{3i}$ is the new
+  position of $v_i$, and $v'_{3i-1}$ and $v'_{3i+1}$ are the positions of the new vertices directly adjacent to $v_i$.
+</p>
+<p>
+  Below, we can observe boundary subdivision for loop subdivision and $\sqrt{3}-$subdivision. We can observe that the boundary has additional vertices and is smoother
+  after one loop subdivision and two $\sqrt{3}-$subdivisions, but is unmodified after one $\sqrt{3}$-subdivision.
 </p>
 <div align="middle">
   <table style="width=100%">
@@ -423,7 +506,6 @@
         <figcaption align="middle">After $\sqrt{3}-$Subdivision Twice</figcaption>
       </td>
     </tr>
-    <br>
   </table>
 </div>
 <br>
