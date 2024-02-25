@@ -18,6 +18,9 @@
   kbd {
     color: #121212;
   }
+  b {
+    font-weight: bold;
+  }
 </style>
 <title>CS 184 Mesh Edit</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -296,11 +299,11 @@
     <tr>
       <td align="middle">
         <img src="images/task5_a.png" align="middle" width="400px" />
-        <figcaption>Before Splits</figcaption>
+        <figcaption>Before Edge Splits</figcaption>
       </td>
       <td align="middle">
         <img src="images/task5_b.png" align="middle" width="400px" />
-        <figcaption align="middle">After Splits</figcaption>
+        <figcaption align="middle">After Edge Splits</figcaption>
       </td>
     </tr>
     <br>
@@ -317,11 +320,11 @@
     <tr>
       <td align="middle">
         <img src="images/task5_c.png" align="middle" width="400px" />
-        <figcaption>Before Splits and Flips</figcaption>
+        <figcaption>Before Edge Splits and Flips</figcaption>
       </td>
       <td align="middle">
         <img src="images/task5_d.png" align="middle" width="400px" />
-        <figcaption align="middle">After Splits and Flips</figcaption>
+        <figcaption align="middle">After Edge Splits and Flips</figcaption>
       </td>
     </tr>
     <br>
@@ -347,11 +350,11 @@
     <tr>
       <td align="middle">
         <img src="images/task5_e.png" align="middle" width="400px" />
-        <figcaption>Before Splits</figcaption>
+        <figcaption>Before Edge Splits</figcaption>
       </td>
       <td align="middle">
         <img src="images/task5_f.png" align="middle" width="400px" />
-        <figcaption align="middle">After Splits</figcaption>
+        <figcaption align="middle">After Edge Splits</figcaption>
       </td>
     </tr>
     <br>
@@ -433,15 +436,38 @@
     If you have implemented any extra credit extensions, explain what you did and document how they work with screenshots.
 </b>
 <p>
-    We additionally implemented $\sqrt{3}-$subdivision, and implemented boundary support for both loop subdivision and $\sqrt{3}-$subdivision. $\sqrt{3}-$subdivision 
-    can be accessed with the 'p' keybind, and we added keybind support for face splitting with 's' if a face is selected.
+    We additionally implemented $\sqrt{3}-$subdivision, and implemented boundary support for both loop subdivision and $\sqrt{3}-$subdivision. 
+    We added keybind support for face splitting with the 's' key if a face is selected and $\sqrt{3}-$subdivision with the 'p' key.
 </p>
+
+<h3>Face Splitting</h3>
 <p>
-    We implemented $\sqrt{3}-$subdivision using the provided <a href="https://www.graphics.rwth-aachen.de/media/papers/sqrt31.pdf">paper</a>. This subdivision scheme 
-    relies on performing face splitting of triangles, which puts a new vertex at the mean of the triangle vertices and creates three new edges to connect them. 
-    Then, all pre-existing edges are flipped to create a roughly even triangular grid that is rotated 30 degrees from the original grid. Existing non-boundary vertices 
-    are weighted by \[v'=(1-\alpha_n)v+\alpha_n \frac{1}{n}\sum_{i=1}^n v_i\] where $v$ is the current position of the vertex, $v'$ is the new position of the vertex, $n$ is the 
-    valence of the vertex, and $v_1,\dots,v_n$ are the positions of the neighbors of this vertex. We define the constant $\alpha_n$ as \[\alpha_n=\frac{4-2\cos(\frac{2\pi}{n})}{9}.\]
+  In order to implement $\sqrt{3}-$subdivision, we first needed to implement face splitting. This operation takes a triangle face, puts a new vertex at the mean of the 
+  triangle vertices, and creates three new edges to connect the new point to existing vertices of the triangle. To implement this, we again drew out a diagram and made
+  sure to update next, twin, edge, face, and vertex pointers, in that order. Below, we show some before and after images of face splitting along with some edge flips.
+</p>
+<div align="middle">
+  <table style="width=100%">
+    <tr>
+      <td align="middle">
+        <img src="images/task6_ec_i.png" align="middle" width="400px" />
+        <figcaption>Before Face Splits</figcaption>
+      </td>
+      <td align="middle">
+        <img src="images/task6_ec_j.png" align="middle" width="400px" />
+        <figcaption align="middle">After Face Splits and Flips</figcaption>
+      </td>
+    </tr>
+    <br>
+  </table>
+</div>
+<h3>$\sqrt{3}-$Subdivision</h3>
+<p>
+    We then implemented $\sqrt{3}-$subdivision using the provided <a href="https://www.graphics.rwth-aachen.de/media/papers/sqrt31.pdf">paper</a>. This subdivision scheme 
+    begins by performing a face split on all faces. Then, all pre-existing edges are flipped to create a roughly even triangular grid that is rotated 30 degrees from 
+    the original grid. Existing non-boundary vertices are given new positions which are weighted by \[v'=(1-\alpha_n)v+\alpha_n \frac{1}{n}\sum_{i=1}^n v_i\] 
+    where $v$ is the current position of the vertex, $v'$ is the new position of the vertex, $n$ is the valence of the vertex, and $v_1,\dots,v_n$ are the positions 
+    of the neighbors of this vertex. We define the constant $\alpha_n$ as \[\alpha_n=\frac{4-2\cos(\frac{2\pi}{n})}{9}.\]
     All new vertices can be left where they were, as an average of the positions of the vertices on the triangle they belong to.
 </p>
 <p>
@@ -490,6 +516,7 @@
   </table>
 </div>
 
+<h3>Boundary Support for Subdivision (Loop and $\sqrt{3}$)</h3>
 <p>
   For loop subdivision boundary support, we added a few edge conditions for boundary vertices. In our initial loop over our vertices, we first find the sum of adjacent 
   boundary vertices for all existing boundary vertices. Then, for existing vertices we use the formula \[v'=\frac{1}{8}v_1+\frac{1}{8}v_2+\frac{3}{4}v\] 
@@ -498,7 +525,7 @@
   iterations are performed, which can be observed in the provided figures.
 </p>
 <p>
-  For $\sqrt{3}-$subdivision support, we needed a slightly more significant modification to the algorithm. Note that in the current form of the algorithm, only faces
+  For $\sqrt{3}-$subdivision boundary support, we needed a slightly more significant modification to the algorithm. Note that in the current form of the algorithm, only faces
   are split, so any boundary edges and vertices remain unmodified and remain where they are. The behavior we observe in all other edges is roughly to split 
   into three edges every two subdivision iterations (hence the $\sqrt{3}$ in the name), so to extend this to boundary edges we can trisect each boundary edge 
   at every second subdivision iteration. We then apply the following weights/stencil: 
@@ -538,35 +565,6 @@
   </table>
 </div>
 <br>
-
-
-<h3 align="middle">Part 7 (Optional, Possible Extra Credit)</h3>
-<b>
-    Save your best polygon mesh as partsevenmodel.dae in your docs folder and show us a screenshot of the mesh in your write-up.
-</b>
-<p>
-    YOUR RESPONSE GOES HERE
-</p>
-<br>
-
-
-<b>
-    Include a series of screenshots showing your original mesh and your mesh after one and two rounds of subdivision. If you have used custom shaders, include screenshots of your mesh with those shaders applied as well.
-</b>
-<p>
-    YOUR RESPONSE GOES HERE
-</p>
-<br>
-
-
-<b>
-    Describe what you have done to enhance your mesh beyond the simple humanoid mesh described in the tutorial.
-</b>
-<p>
-    YOUR RESPONSE GOES HERE
-</p>
-<br>
-
 
 </body>
 </html>
