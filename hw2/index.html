@@ -17,6 +17,7 @@
   }
   kbd {
     color: #121212;
+    font-size: large;
   }
   b {
     font-weight: bold;
@@ -60,7 +61,9 @@
   implement several mesh operations: edge flip, edge split, loop subdivision (i.e.
   split edges and form new triangles from the existing incident ones),
   and $\sqrt 3$-subdivision (i.e. introduce a centroid face split operation as well as
-  a new keybind for debugging, and flip edges). For each of these operations, we discuss our approach
+  a new keybind for debugging, and flip edges). For edge splits, loop subdivision,
+  and $\sqrt 3$-subdivision, we have additionally implemented boundary conditions.
+  For each of these operations, we discuss our approach
   (the ways in which we optimized our implementation to change as few
   pointers as possible) and debugging strategies.
 </p>
@@ -80,7 +83,7 @@
   Bézier curve (make a copy). Repeat the following process recursively: for each iteration, 
   linearly interpolate between adjacent control points. That is, with some control
 	points $\{p_i\}_{i=1}^n$, one iteration of the update will be $\{(1-t)p_i + tp_{i+1}\}_{i=1}^{n-1}$.
-	In the code, this is implemented as `BezierCurve::evaluateStep`.
+	In the code, this is implemented as <kbd>BezierCurve::evaluateStep</kbd>.
 </p>
 <p>
 	Eventually, we will have one point, which is the point corresponding to $t$.
@@ -406,7 +409,8 @@
 <div align="middle">
 	<figure>
 		<img src="images/6/cube-spam.png" width="300px" />
-		<figcaption>Cube with 48 edge splits.</figcaption>
+		<figcaption>Cube with 48 edge splits after several iterations of
+      loop subdivision.</figcaption>
 	</figure>
 </div>
 <p>
@@ -473,7 +477,7 @@
 <p>
     Overall, we follow the following algorithm:
     <ol>
-      <li>Update the `newPosition` of each vertex in the mesh as a weighted average of the current position and neighboring vertices' positions.</li>
+      <li>Update the <kbd>newPosition</kbd> of each vertex in the mesh as a weighted average of the current position and neighboring vertices' positions.</li>
       <li>
         Split each face. We store the number of required faces to split, so that we do not split the new faces
         we just created (which would result in an infinite loop). Mark each new vertex as new.
