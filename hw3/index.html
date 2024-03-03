@@ -19,6 +19,7 @@
         font-family: "Source Sans Pro", sans-serif;
       }
       kbd {
+        font-size: large;
         color: #121212;
       }
     </style>
@@ -62,7 +63,7 @@
   </head>
 
   <body>
-    <h1 align="middle">CS 184: Computer Graphics and Imaging, Spring 2023</h1>
+    <h1 align="middle">CS 184: Computer Graphics and Imaging, Spring 2024</h1>
     <h1 align="middle">Project 3-1: Path Tracer</h1>
     <h2 align="middle">Preston Fu and Ralph Cao</h2>
 
@@ -99,7 +100,29 @@ Show images with normal shading for a few small .dae files. -->
       Explain the triangle intersection algorithm you implemented in your own
       words.
     </h3>
-    <p>YOUR RESPONSE GOES HERE</p>
+    <p>
+      We implemented the Moller-Trumbore algorithm from lecture. This optimized
+      over the standard approach of solving for the intersection with the plane
+      and checking that the intersection is inside the triangle with vertices
+      $\mathbf P_1$, $\mathbf P_2$, $\mathbf P_3$. Specifically, for a ray
+      parameterized by $(\mathbf o, \mathbf d)$, we can solve for scalars $b_2$
+      and $b_3$ satisfying $\mathbf o + t \mathbf d= (1 - b_2 - b_3) \mathbf P_1
+      + b_2 \mathbf P_2 +b_3 \mathbf P_3$ as \[ \begin{bmatrix} t\\ b_1 \\ b_2
+      \end{bmatrix} = \frac 1{\mathbf S_2 \cdot \mathbf E_2}
+      \begin{bmatrix}\mathbf S_3 \cdot \mathbf E_3 \\ \mathbf S_2 \cdot \mathbf
+      S \\ \mathbf S_3 \cdot \mathbf d \end{bmatrix},\] where $\mathbf E_2 =
+      \mathbf P_2 - \mathbf P_1$, $\mathbf E_3 = \mathbf P_3 - \mathbf P_1$,
+      $\mathbf S = \mathbf o -\mathbf P_1$, $\mathbf S_1 = \mathbf d \times
+      \mathbf E_3$, and $\mathbf S_2 = \mathbf S \times \mathbf E_2$. This
+      approach confers a few benefits:
+    </p>
+    <ul>
+      <li>Straightforward implementation.</li>
+      <li>
+        A long time ago, division was expensive to do. (And since there are lots
+        of rays, it still is.) This algorithm only entails one divide.
+      </li>
+    </ul>
     <br />
 
     <h3>Show images with normal shading for a few small .dae files.</h3>
@@ -187,7 +210,48 @@ Focus on one particular scene with at least one area light and compare the noise
 Compare the results between uniform hemisphere sampling and lighting sampling in a one-paragraph analysis. -->
 
     <h3>Walk through both implementations of the direct lighting function.</h3>
-    <p>YOUR RESPONSE GOES HERE</p>
+    <p>
+      We implement direct lighting with two sampling methods, i.e. uniform
+      hemisphere sampling (<kbd>estimate_direct_lighting_hemisphere</kbd>) and
+      lighting importance sampling
+      (<kbd>estimate_direct_lighting_importance</kbd>). In either case, we
+      consider a ray $r = (\mathbf o, \mathbf d)$, which hits an object
+      $\mathcal O$ as specified by <kbd>isect</kbd>. The corresponding hit point
+      is given by $\mathbf p$ (<kbd>hit_p</kbd>). To compute the incoming
+      radiance at $\mathbf o$ in the direction of $\mathbf d$, we observe that
+      the radiance along a ray is constant, and we can estimate this by sampling
+      directions $\omega_i$ centered at $\mathbf p$. In either case, we maintain
+      a running radiance total along these samples in $L_{\text{out}}$, then
+      divide by <kbd>num_samples</kbd> in the end.
+    </p>
+
+    <p>
+      In the uniform hemisphere sampling case, we use
+      <kbd>hemisphereSampler->get_sample()</kbd>, and check whether our ray with
+      outgoing direction $\omega_i$ (incoming direction $-\omega_i$) intersects
+      a light soure. In this case, we increment $L_{\text{out}}$ by \[
+      \frac{f(\omega_{\text{out}}, \text{w2o}(\omega_i)) L_i(\mathbf p,
+      \omega_i) (\omega_i \cdot \mathbf n)}{1/2\pi}, \] where $\text{w2o}$
+      denotes a conversion from world to object coordinates based on the normal
+      $\mathbf n$ at $\mathbf p$ on the surface of $\mathcal O$, $L_i$ denotes
+      the emission at the light source, the dot product indicates the cosine
+      angle between the incoming ray and normal vector, and $\frac 1{2\pi}$ is
+      the pdf of uniformly sampling $\omega_i$ from the hemisphere.
+    </p>
+
+    <p>
+      In the light source importance sampling case, we use loop over the lights,
+      and for each one collect samples via <kbd>light->sample_L</kbd> (1 sample
+      if it is a point source light and <kbd>ns_area_light</kbd> otherwise).
+      From each sample $\omega_i$, we cast a ray $r$ and evaluate the incoming
+      radiance $L_i(\mathbf p, \omega_i)$, pdf $p$, and distance $d$ to the
+      light source. We check whether the light source is directly visible from
+      $\mathbf p$ by checking whether $r$ restricted to $[\varepsilon, d -
+      \varepsilon]$ does not have any intersections. In this case, we increment
+      $L_{\text{out}}$ by \[ \frac{f(\omega_{\text{out}}, \text{w2o}(\omega_i))
+      L_i(\mathbf p, \omega_i) (\omega_i \cdot \mathbf n)}{p(\omega_i)}, \]
+      following the same notation as above.
+    </p>
 
     <h3>
       Show some images rendered with both implementations of the direct lighting
