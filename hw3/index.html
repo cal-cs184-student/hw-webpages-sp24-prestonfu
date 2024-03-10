@@ -142,24 +142,28 @@ Show images with normal shading for a few small .dae files. -->
     <h3>Show images with normal shading for a few small .dae files.</h3>
     <!-- Example of including multiple figures -->
     <div align="middle">
-      <table style="width:100%">
+      <table style="width: 100%">
         <tr align="center">
           <td>
-            <img src="images/part1/CBempty.png" align="middle" width="400px"/>
+            <img src="images/part1/CBempty.png" align="middle" width="400px" />
             <figcaption>CBempty.dae</figcaption>
           </td>
           <td>
-            <img src="images/part1/CBspheres.png" align="middle" width="400px"/>
+            <img
+              src="images/part1/CBspheres.png"
+              align="middle"
+              width="400px"
+            />
             <figcaption>CBspheres.dae</figcaption>
           </td>
         </tr>
         <tr align="center">
           <td>
-            <img src="images/part1/CBcoil.png" align="middle" width="400px"/>
+            <img src="images/part1/CBcoil.png" align="middle" width="400px" />
             <figcaption>CBcoil.dae</figcaption>
           </td>
           <td>
-            <img src="images/part1/cow.png" align="middle" width="400px"/>
+            <img src="images/part1/cow.png" align="middle" width="400px" />
             <figcaption>cow.dae</figcaption>
           </td>
         </tr>
@@ -216,8 +220,24 @@ Compare rendering times on a few scenes with moderately complex geometries with 
       with and without BVH acceleration. Present your results in a one-paragraph
       analysis.
     </h3>
-    <p>    CBcoil.dae: (40.9131s) before, (0.1457s) after
-      cow.dae: (29.6984s) before, (0.1387s) after</p>
+    <p>The rendering times are shown in the table below.</p>
+    <table style="width: 35%" align="center">
+      <tr align="center">
+        <th>Scene</th>
+        <th>Without BVH (s)</th>
+        <th>With BVH (s)</th>
+      </tr>
+      <tr align="center">
+        <td>CBcoil.dae</td>
+        <td>40.9131</td>
+        <td>0.1457</td>
+      </tr>
+      <tr align="center">
+        <td>cow.dae</td>
+        <td>29.6984</td>
+        <td>0.1387</td>
+      </tr>
+    </table>
     <br />
 
     <h2 align="middle">Part 3: Direct Illumination (20 Points)</h2>
@@ -247,13 +267,15 @@ Compare the results between uniform hemisphere sampling and lighting sampling in
       <kbd>hemisphereSampler->get_sample()</kbd>, and check whether our ray with
       outgoing direction $\omega_i$ (incoming direction $-\omega_i$) intersects
       a light soure. In this case, we increment $L_{\text{out}}$ by \[
-      \frac{f(\omega_{\text{out}}, \text{w2o}(\omega_i)) L_i(\mathbf p,
-      \omega_i) (\omega_i \cdot \mathbf n)}{1/2\pi}, \] where $\text{w2o}$
-      denotes a conversion from world to object coordinates based on the normal
-      $\mathbf n$ at $\mathbf p$ on the surface of $\mathcal O$, $L_i$ denotes
-      the emission at the light source, the dot product indicates the cosine
-      angle between the incoming ray and normal vector, and $\frac 1{2\pi}$ is
-      the pdf of uniformly sampling $\omega_i$ from the hemisphere.
+      \frac{f(\omega_{\text{out}} \to \text{w2o}(\omega_i)) L_i(\mathbf p,
+      \omega_i) (\omega_i \cdot \mathbf n)}{1/2\pi}, \] where $f$ denotes a
+      bidirectional scattering distribution function (BSDF) for diffuse
+      surfaces, $\text{w2o}$ denotes a conversion from world to object
+      coordinates based on the normal $\mathbf n$ at $\mathbf p$ on the surface
+      of $\mathcal O$, $L_i$ denotes the emission at the light source, the dot
+      product indicates the cosine angle between the incoming ray and normal
+      vector, and $\frac 1{2\pi}$ is the pdf of uniformly sampling $\omega_i$
+      from the hemisphere.
     </p>
 
     <p>
@@ -265,9 +287,9 @@ Compare the results between uniform hemisphere sampling and lighting sampling in
       light source. We check whether the light source is directly visible from
       $\mathbf p$ by checking whether $r$ restricted to $[\varepsilon, d -
       \varepsilon]$ does not have any intersections. In this case, we increment
-      $L_{\text{out}}$ by \[ \frac{f(\omega_{\text{out}}, \text{w2o}(\omega_i))
-      L_i(\mathbf p, \omega_i) (\omega_i \cdot \mathbf n)}{p(\omega_i)}, \]
-      following the same notation as above.
+      $L_{\text{out}}$ by \[ \frac{f(\omega_{\text{out}} \to
+      \text{w2o}(\omega_i)) L_i(\mathbf p, \omega_i) (\omega_i \cdot \mathbf
+      n)}{p(\omega_i)}, \] following the same notation as above.
     </p>
 
     <h3>
@@ -289,23 +311,47 @@ Compare the results between uniform hemisphere sampling and lighting sampling in
         <br />
         <tr align="center">
           <td>
-            <img src="images/part3/CBbunny_H_16_8.png" align="middle" width="400px" />
-            <figcaption>CBbunny.dae, 16 rays per pixel, 8 samples per light source</figcaption>
+            <img
+              src="images/part3/CBbunny_H_16_8.png"
+              align="middle"
+              width="400px"
+            />
+            <figcaption>
+              CBbunny.dae, 16 rays per pixel, 8 samples per light source
+            </figcaption>
           </td>
           <td>
-            <img src="images/part3/bunny_1_1.png" align="middle" width="400px" />
-            <figcaption>CBbunny.dae, 1 ray per pixel, 1 sample per light source</figcaption>
+            <img
+              src="images/part3/bunny_1_1.png"
+              align="middle"
+              width="400px"
+            />
+            <figcaption>
+              CBbunny.dae, 1 ray per pixel, 1 sample per light source
+            </figcaption>
           </td>
         </tr>
         <br />
         <tr align="center">
           <td>
-            <img src="images/part3/CBbunny_H_64_32.png" align="middle" width="400px" />
-            <figcaption>CBbunny.dae, 64 rays per pixel, 32 samples per light source</figcaption>
+            <img
+              src="images/part3/CBbunny_H_64_32.png"
+              align="middle"
+              width="400px"
+            />
+            <figcaption>
+              CBbunny.dae, 64 rays per pixel, 32 samples per light source
+            </figcaption>
           </td>
           <td>
-            <img src="images/part3/bunny_64_32.png" align="middle" width="400px" />
-            <figcaption>CBbunny.dae, 64 rays per pixel, 32 samples per light source</figcaption>
+            <img
+              src="images/part3/bunny_64_32.png"
+              align="middle"
+              width="400px"
+            />
+            <figcaption>
+              CBbunny.dae, 64 rays per pixel, 32 samples per light source
+            </figcaption>
           </td>
         </tr>
         <br />
@@ -324,21 +370,37 @@ Compare the results between uniform hemisphere sampling and lighting sampling in
       <table style="width: 100%">
         <tr align="center">
           <td>
-            <img src="images/part3/bunny_1_1.png" align="middle" width="200px" />
+            <img
+              src="images/part3/bunny_1_1.png"
+              align="middle"
+              width="200px"
+            />
             <figcaption>1 Light Ray (CBbunny.dae)</figcaption>
           </td>
           <td>
-            <img src="images/part3/bunny_1_4.png" align="middle" width="200px" />
+            <img
+              src="images/part3/bunny_1_4.png"
+              align="middle"
+              width="200px"
+            />
             <figcaption>4 Light Rays (CBbunny.dae)</figcaption>
           </td>
         </tr>
         <tr align="center">
           <td>
-            <img src="images/part3/bunny_1_16.png" align="middle" width="200px" />
+            <img
+              src="images/part3/bunny_1_16.png"
+              align="middle"
+              width="200px"
+            />
             <figcaption>16 Light Rays (CBbunny.dae)</figcaption>
           </td>
           <td>
-            <img src="images/part3/bunny_1_64.png" align="middle" width="200px" />
+            <img
+              src="images/part3/bunny_1_64.png"
+              align="middle"
+              width="200px"
+            />
             <figcaption>64 Light Rays (CBbunny.dae)</figcaption>
           </td>
         </tr>
@@ -409,7 +471,20 @@ Pick one scene and compare rendered views with various sample-per-pixel rates, i
 You will probably want to use the instructional machines for the above renders in order to not burn up your own computer for hours. -->
 
     <h3>Walk through your implementation of the indirect lighting function.</h3>
-    <p>YOUR RESPONSE GOES HERE</p>
+    <p>
+      For each ray, we additionally update the <kbd>depth</kbd>, which indicates
+      the number of allowed bounces before truncation. We use Russian roulette
+      where we keep $c = 65\%$ of the rays (or drop 35% of them). Our approach
+      is recursive: for a ray $r$ and hit point $\mathbf p$, our base case is
+      returning the one-bounce radiance if $r$ has depth 1. Otherwise, we cast a
+      ray $r'$ from $\mathbf p$ with sampled outgoing direction $\omega_i$ in
+      object coordinates. If the ray has an intersection at $\mathbf p'$, then
+      we increment $L_{\text{out}}$ by \[
+      \texttt{at_least_one_bounce_radiance}(r', \mathbf p')
+      \frac{f(\omega_{\text{out}} \to \omega_i) (\omega_i \cdot
+      \text{o2w}(\mathbf n))}{p(\omega_i) \cdot c}, \] following the same
+      notation as above.
+    </p>
     <br />
     <h3>
       Show some images rendered with global (direct and indirect) illumination.
@@ -497,6 +572,65 @@ You will probably want to use the instructional machines for the above renders i
     <br />
 
     <h3>
+      For CBbunny.dae, output the Russian Roulette rendering with max_ray_depth
+      set to 0, 1, 2, 3, 4, and 100 (the -m flag). Use 1024 samples per pixel.
+    </h3>
+    <!-- Example of including multiple figures -->
+    <div align="middle">
+      <table style="width: 100%">
+        <tr align="center">
+          <td>
+            <img
+              src="images/part4/bunny_0_rr.png"
+              align="middle"
+              width="400px"
+            />
+            <figcaption>max_ray_depth = 0 (CBbunny.dae)</figcaption>
+          </td>
+          <td>
+            <img
+              src="images/part4/bunny_1_rr.png"
+              align="middle"
+              width="400px"
+            />
+            <figcaption>max_ray_depth = 1 (CBbunny.dae)</figcaption>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            <img
+              src="images/part4/bunny_2_rr.png"
+              align="middle"
+              width="400px"
+            />
+            <figcaption>max_ray_depth = 2 (CBbunny.dae)</figcaption>
+          </td>
+          <td>
+            <img
+              src="images/part4/bunny_3_rr.png"
+              align="middle"
+              width="400px"
+            />
+            <figcaption>max_ray_depth = 3 (CBbunny.dae)</figcaption>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            <img
+              src="images/part4/bunny_100_rr.png"
+              align="middle"
+              width="400px"
+            />
+            <figcaption>max_ray_depth = 100 (CBbunny.dae)</figcaption>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <br />
+    <p>YOUR EXPLANATION GOES HERE</p>
+    <br />
+
+    <h3>
       Pick one scene and compare rendered views with various sample-per-pixel
       rates, including at least 1, 2, 4, 8, 16, 64, and 1024. Use 4 light rays.
     </h3>
@@ -505,38 +639,50 @@ You will probably want to use the instructional machines for the above renders i
       <table style="width: 100%">
         <tr align="center">
           <td>
-            <img src="images/your_file.png" align="middle" width="400px" />
-            <figcaption>1 sample per pixel (example1.dae)</figcaption>
+            <img src="images/part4/bunny_s1.png" align="middle" width="400px" />
+            <figcaption>1 sample per pixel (CBbunny.dae)</figcaption>
           </td>
           <td>
-            <img src="images/your_file.png" align="middle" width="400px" />
-            <figcaption>2 samples per pixel (example1.dae)</figcaption>
-          </td>
-        </tr>
-        <tr align="center">
-          <td>
-            <img src="images/your_file.png" align="middle" width="400px" />
-            <figcaption>4 samples per pixel (example1.dae)</figcaption>
-          </td>
-          <td>
-            <img src="images/your_file.png" align="middle" width="400px" />
-            <figcaption>8 samples per pixel (example1.dae)</figcaption>
+            <img src="images/part4/bunny_s2.png" align="middle" width="400px" />
+            <figcaption>2 samples per pixel (CBbunny.dae)</figcaption>
           </td>
         </tr>
         <tr align="center">
           <td>
-            <img src="images/your_file.png" align="middle" width="400px" />
-            <figcaption>16 samples per pixel (example1.dae)</figcaption>
+            <img src="images/part4/bunny_s4.png" align="middle" width="400px" />
+            <figcaption>4 samples per pixel (CBbunny.dae)</figcaption>
           </td>
           <td>
-            <img src="images/your_file.png" align="middle" width="400px" />
-            <figcaption>64 samples per pixel (example1.dae)</figcaption>
+            <img src="images/part4/bunny_s8.png" align="middle" width="400px" />
+            <figcaption>8 samples per pixel (CBbunny.dae)</figcaption>
           </td>
         </tr>
         <tr align="center">
           <td>
-            <img src="images/your_file.png" align="middle" width="400px" />
-            <figcaption>1024 samples per pixel (example1.dae)</figcaption>
+            <img
+              src="images/part4/bunny_s16.png"
+              align="middle"
+              width="400px"
+            />
+            <figcaption>16 samples per pixel (CBbunny.dae)</figcaption>
+          </td>
+          <td>
+            <img
+              src="images/part4/bunny_s64.png"
+              align="middle"
+              width="400px"
+            />
+            <figcaption>64 samples per pixel (CBbunny.dae)</figcaption>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            <img
+              src="images/part4/bunny_s1024.png"
+              align="middle"
+              width="400px"
+            />
+            <figcaption>1024 samples per pixel (CBbunny.dae)</figcaption>
           </td>
         </tr>
       </table>
@@ -553,7 +699,22 @@ Pick one scene and render it with at least 2048 samples per pixel. Show a good s
       Explain adaptive sampling. Walk through your implementation of the
       adaptive sampling.
     </h3>
-    <p>YOUR RESPONSE GOES HERE</p>
+    <p>
+      Pixels converge at different rates, i.e. each pixel will need a different
+      number of samples. Adaptive sampling handles this problem by running
+      statistics with a normal prior, stopping ray tracing early for pixels
+      where we confident in the true mean illuminance.
+    </p>
+    <p>
+      We process samples in batches. Our samples are drawn uniformly from a
+      grid, and from each sample, we evaluate the illuminance. To efficiently
+      calculate the sample mean $\mu$ and variance $\sigma^2$, we maintain
+      buffers for the sum and sum of squares of illuminance. At the end of each
+      batch at which point there are $n$ total samples, we drop pixels for which
+      the true mean illuminance lies in $[\mu - 1.96 \sigma / \sqrt n, \mu +
+      1.96 \sigma / \sqrt n]$, where 1.96 is the required quantile to achieve
+      95% confidence in the pixel value.
+    </p>
     <br />
 
     <h3>
