@@ -93,7 +93,21 @@ Show images with normal shading for a few small .dae files. -->
       Walk through the ray generation and primitive intersection parts of the
       rendering pipeline.
     </h3>
-    <p>YOUR RESPONSE GOES HERE</p>
+    <p>
+      To generate a single ray from a camera given a point $(x,y)$ on the screen, 
+      we first converted the screen point into camera world space through the 
+      transformation
+      \[(x,y)\to (2\tan(0.5\cdot hFov)(x-0.5),2\tan(0.5\cdot vFov)(y-0.5),-1)\]
+      and then multiplied by the $c2w$ transformation matrix to get the resulting
+      ray direction in world space, which we normalize. We use the camera position
+      as the origin of the ray and return it with both clipping planes in min/max $t$.
+    </p>
+    <p>
+      To determine the rays to generate, we looped through each pixel of the screen
+      and sent randomly generated rays uniformly selected from within each pixel,
+      and averaged the radiance calculated by the rest of the code based on intersections
+      with primitives.
+    </p>
     <br />
 
     <h3>
@@ -162,7 +176,9 @@ Compare rendering times on a few scenes with moderately complex geometries with 
       Walk through your BVH construction algorithm. Explain the heuristic you
       chose for picking the splitting point.
     </h3>
-    <p>YOUR RESPONSE GOES HERE</p>
+    <p>
+
+    </p>
 
     <h3>
       Show images with normal shading for a few large .dae files that you can
@@ -339,6 +355,52 @@ Compare the results between uniform hemisphere sampling and lighting sampling in
     <br />
 
     <h2 align="middle">Part 4: Global Illumination (20 Points)</h2>
+    <!--
+./pathtracer -t 8 -s 1024 -l 16 -m 5 -r 480 360 -f spheres_global.png ../dae/sky/CBspheres_lambertian.dae
+./pathtracer -t 8 -s 1024 -l 16 -m 5 -r 480 360 -f bunny_global.png ../dae/sky/CBbunny.dae
+
+Direct only and indirect only (modify pathtracer)
+./pathtracer -t 8 -s 1024 -l 16 -r 480 360 -f bunny_direct.png ../dae/sky/CBbunny.dae
+./pathtracer -t 8 -s 1024 -l 16 -m 5 -r 480 360 -f bunny_indirect.png ../dae/sky/CBbunny.dae
+
+Accumulate = false, no russian roulette (or p=1)
+./pathtracer -t 8 -s 1024 -l 16 -m 0 -o 0 -r 480 360 -f bunny_0.png ../dae/sky/CBbunny.dae
+./pathtracer -t 8 -s 1024 -l 16 -m 1 -o 0 -r 480 360 -f bunny_1.png ../dae/sky/CBbunny.dae
+./pathtracer -t 8 -s 1024 -l 16 -m 2 -o 0 -r 480 360 -f bunny_2.png ../dae/sky/CBbunny.dae
+./pathtracer -t 8 -s 1024 -l 16 -m 3 -o 0 -r 480 360 -f bunny_3.png ../dae/sky/CBbunny.dae
+./pathtracer -t 8 -s 1024 -l 16 -m 4 -o 0 -r 480 360 -f bunny_4.png ../dae/sky/CBbunny.dae
+./pathtracer -t 8 -s 1024 -l 16 -m 5 -o 0 -r 480 360 -f bunny_5.png ../dae/sky/CBbunny.dae
+
+./pathtracer -t 8 -s 1024 -l 16 -m 0 -r 480 360 -f bunny_0_accumulate.png ../dae/sky/CBbunny.dae
+./pathtracer -t 8 -s 1024 -l 16 -m 1 -r 480 360 -f bunny_1_accumulate.png ../dae/sky/CBbunny.dae
+./pathtracer -t 8 -s 1024 -l 16 -m 2 -r 480 360 -f bunny_2_accumulate.png ../dae/sky/CBbunny.dae
+./pathtracer -t 8 -s 1024 -l 16 -m 3 -r 480 360 -f bunny_3_accumulate.png ../dae/sky/CBbunny.dae
+./pathtracer -t 8 -s 1024 -l 16 -m 4 -r 480 360 -f bunny_4_accumulate.png ../dae/sky/CBbunny.dae
+./pathtracer -t 8 -s 1024 -l 16 -m 5 -r 480 360 -f bunny_5_accumulate.png ../dae/sky/CBbunny.dae
+
+Russian roulette
+./pathtracer -t 8 -s 1024 -l 16 -m 0 -r 480 360 -f bunny_0_rr.png ../dae/sky/CBbunny.dae
+./pathtracer -t 8 -s 1024 -l 16 -m 1 -r 480 360 -f bunny_1_rr.png ../dae/sky/CBbunny.dae
+./pathtracer -t 8 -s 1024 -l 16 -m 2 -r 480 360 -f bunny_2_rr.png ../dae/sky/CBbunny.dae
+./pathtracer -t 8 -s 1024 -l 16 -m 3 -r 480 360 -f bunny_3_rr.png ../dae/sky/CBbunny.dae
+./pathtracer -t 8 -s 1024 -l 16 -m 100 -r 480 360 -f bunny_100_rr.png ../dae/sky/CBbunny.dae
+
+
+./pathtracer -t 8 -s 1 -l 4 -m 5 -r 480 360 -f bunny_s1.png ../dae/sky/CBbunny.dae
+./pathtracer -t 8 -s 2 -l 4 -m 5 -r 480 360 -f bunny_s2.png ../dae/sky/CBbunny.dae
+./pathtracer -t 8 -s 4 -l 4 -m 5 -r 480 360 -f bunny_s4.png ../dae/sky/CBbunny.dae
+./pathtracer -t 8 -s 8 -l 4 -m 5 -r 480 360 -f bunny_s8.png ../dae/sky/CBbunny.dae
+./pathtracer -t 8 -s 16 -l 4 -m 5 -r 480 360 -f bunny_s16.png ../dae/sky/CBbunny.dae
+./pathtracer -t 8 -s 64 -l 4 -m 5 -r 480 360 -f bunny_s64.png ../dae/sky/CBbunny.dae
+./pathtracer -t 8 -s 1024 -l 4 -m 5 -r 480 360 -f bunny_s1024.png ../dae/sky/CBbunny.dae
+
+Part 5
+./pathtracer -t 8 -s 2048 -l 1 -m 5 -r 480 360 -f bunny_adaptive.png ../dae/sky/CBbunny.dae
+./pathtracer -t 8 -s 2048 -l 1 -m 5 -r 480 360 -f spheres_adaptive.png ../dae/sky/CBspheres_lambertian.dae
+
+
+    -->
+
     <!-- Walk through your implementation of the indirect lighting function.
 Show some images rendered with global (direct and indirect) illumination. Use 1024 samples per pixel.
 Pick one scene and compare rendered views first with only direct illumination, then only indirect illumination. Use 1024 samples per pixel. (You will have to edit PathTracer::at_least_one_bounce_radiance(...) in your code to generate these views.)
@@ -349,7 +411,6 @@ You will probably want to use the instructional machines for the above renders i
     <h3>Walk through your implementation of the indirect lighting function.</h3>
     <p>YOUR RESPONSE GOES HERE</p>
     <br />
-
     <h3>
       Show some images rendered with global (direct and indirect) illumination.
       Use 1024 samples per pixel.
@@ -359,12 +420,12 @@ You will probably want to use the instructional machines for the above renders i
       <table style="width: 100%">
         <tr align="center">
           <td>
-            <img src="images/your_file.png" align="middle" width="400px" />
-            <figcaption>example1.dae</figcaption>
+            <img src="images/bunny_global.png" align="middle" width="400px" />
+            <figcaption>CBbunny.dae</figcaption>
           </td>
           <td>
-            <img src="images/your_file.png" align="middle" width="400px" />
-            <figcaption>example2.dae</figcaption>
+            <img src="images/spheres_global.png" align="middle" width="400px" />
+            <figcaption>CBspheres_lambertian.dae</figcaption>
           </td>
         </tr>
       </table>
