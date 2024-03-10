@@ -445,6 +445,7 @@ Russian roulette
 ./pathtracer -t 8 -s 1024 -l 16 -m 1 -r 480 360 -f bunny_1_rr.png ../dae/sky/CBbunny.dae
 ./pathtracer -t 8 -s 1024 -l 16 -m 2 -r 480 360 -f bunny_2_rr.png ../dae/sky/CBbunny.dae
 ./pathtracer -t 8 -s 1024 -l 16 -m 3 -r 480 360 -f bunny_3_rr.png ../dae/sky/CBbunny.dae
+./pathtracer -t 8 -s 1024 -l 16 -m 4 -r 480 360 -f bunny_4_rr.png ../dae/sky/CBbunny.dae
 ./pathtracer -t 8 -s 1024 -l 16 -m 100 -r 480 360 -f bunny_100_rr.png ../dae/sky/CBbunny.dae
 
 
@@ -495,11 +496,11 @@ You will probably want to use the instructional machines for the above renders i
       <table style="width: 100%">
         <tr align="center">
           <td>
-            <img src="images/bunny_global.png" align="middle" width="400px" />
+            <img src="images/part4/global/bunny_global.png" align="middle" width="400px" />
             <figcaption>CBbunny.dae</figcaption>
           </td>
           <td>
-            <img src="images/spheres_global.png" align="middle" width="400px" />
+            <img src="images/part4/global/spheres_global.png" align="middle" width="400px" />
             <figcaption>CBspheres_lambertian.dae</figcaption>
           </td>
         </tr>
@@ -518,12 +519,12 @@ You will probably want to use the instructional machines for the above renders i
       <table style="width: 100%">
         <tr align="center">
           <td>
-            <img src="images/your_file.png" align="middle" width="400px" />
-            <figcaption>Only direct illumination (example1.dae)</figcaption>
+            <img src="images/part4/direct_indirect/bunny_direct.png" align="middle" width="400px" />
+            <figcaption>Only direct illumination (CBbunny.dae)</figcaption>
           </td>
           <td>
-            <img src="images/your_file.png" align="middle" width="400px" />
-            <figcaption>Only indirect illumination (example1.dae)</figcaption>
+            <img src="images/part4/direct_indirect/bunny_indirect.png" align="middle" width="400px" />
+            <figcaption>Only indirect illumination (CBbunny.dae)</figcaption>
           </td>
         </tr>
       </table>
@@ -533,36 +534,42 @@ You will probably want to use the instructional machines for the above renders i
     <br />
 
     <h3>
-      For CBbunny.dae, compare rendered views with max_ray_depth set to 0, 1, 2,
-      3, and 100 (the -m flag). Use 1024 samples per pixel.
+      For CBbunny.dae, render the mth bounce of light with max_ray_depth set to 
+      0, 1, 2, 3, 4, and 5 (the -m flag), and isAccumBounces=false. Explain in 
+      your writeup what you see for the 2nd and 3rd bounce of light, and how it 
+      contributes to the quality of the rendered image compared to rasterization. 
+      Use 1024 samples per pixel.
     </h3>
-    <!-- Example of including multiple figures -->
     <div align="middle">
       <table style="width: 100%">
         <tr align="center">
           <td>
-            <img src="images/your_file.png" align="middle" width="400px" />
+            <img src="images/part4/no_accum/bunny_0.png" align="middle" width="400px" />
             <figcaption>max_ray_depth = 0 (CBbunny.dae)</figcaption>
           </td>
           <td>
-            <img src="images/your_file.png" align="middle" width="400px" />
+            <img src="images/part4/no_accum/bunny_1.png" align="middle" width="400px" />
             <figcaption>max_ray_depth = 1 (CBbunny.dae)</figcaption>
           </td>
         </tr>
         <tr align="center">
           <td>
-            <img src="images/your_file.png" align="middle" width="400px" />
+            <img src="images/part4/no_accum/bunny_2.png" align="middle" width="400px" />
             <figcaption>max_ray_depth = 2 (CBbunny.dae)</figcaption>
           </td>
           <td>
-            <img src="images/your_file.png" align="middle" width="400px" />
+            <img src="images/part4/no_accum/bunny_3.png" align="middle" width="400px" />
             <figcaption>max_ray_depth = 3 (CBbunny.dae)</figcaption>
           </td>
         </tr>
         <tr align="center">
           <td>
-            <img src="images/your_file.png" align="middle" width="400px" />
-            <figcaption>max_ray_depth = 100 (CBbunny.dae)</figcaption>
+            <img src="images/part4/no_accum/bunny_4.png" align="middle" width="400px" />
+            <figcaption>max_ray_depth = 4 (CBbunny.dae)</figcaption>
+          </td>
+          <td>
+            <img src="images/part4/no_accum/bunny_5.png" align="middle" width="400px" />
+            <figcaption>max_ray_depth = 5 (CBbunny.dae)</figcaption>
           </td>
         </tr>
       </table>
@@ -570,6 +577,45 @@ You will probably want to use the instructional machines for the above renders i
     <br />
     <p>YOUR EXPLANATION GOES HERE</p>
     <br />
+    <h3>
+      For CBbunny.dae, compare rendered views with max_ray_depth set to 0, 1, 2, 3, 4, and 5(the -m flag). 
+      Use 1024 samples per pixel.
+    </h3>
+    <!-- Example of including multiple figures -->
+    <div align="middle">
+      <table style="width: 100%">
+        <tr align="center">
+          <td>
+            <img src="images/part4/accum/bunny_0_accumulate.png" align="middle" width="400px" />
+            <figcaption>max_ray_depth = 0 (CBbunny.dae)</figcaption>
+          </td>
+          <td>
+            <img src="images/part4/accum/bunny_1_accumulate.png" align="middle" width="400px" />
+            <figcaption>max_ray_depth = 1 (CBbunny.dae)</figcaption>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            <img src="images/part4/accum/bunny_2_accumulate.png" align="middle" width="400px" />
+            <figcaption>max_ray_depth = 2 (CBbunny.dae)</figcaption>
+          </td>
+          <td>
+            <img src="images/part4/accum/bunny_3_accumulate.png" align="middle" width="400px" />
+            <figcaption>max_ray_depth = 3 (CBbunny.dae)</figcaption>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            <img src="images/part4/accum/bunny_4_accumulate.png" align="middle" width="400px" />
+            <figcaption>max_ray_depth = 4 (CBbunny.dae)</figcaption>
+          </td>
+          <td>
+            <img src="images/part4/accum/bunny_5_accumulate.png" align="middle" width="400px" />
+            <figcaption>max_ray_depth = 5 (CBbunny.dae)</figcaption>
+          </td>
+        </tr>
+      </table>
+    </div>
 
     <h3>
       For CBbunny.dae, output the Russian Roulette rendering with max_ray_depth
@@ -581,7 +627,7 @@ You will probably want to use the instructional machines for the above renders i
         <tr align="center">
           <td>
             <img
-              src="images/part4/bunny_0_rr.png"
+              src="images/part4/russian_roulette/bunny_0_rr.png"
               align="middle"
               width="400px"
             />
@@ -589,7 +635,7 @@ You will probably want to use the instructional machines for the above renders i
           </td>
           <td>
             <img
-              src="images/part4/bunny_1_rr.png"
+              src="images/part4/russian_roulette/bunny_1_rr.png"
               align="middle"
               width="400px"
             />
@@ -599,7 +645,7 @@ You will probably want to use the instructional machines for the above renders i
         <tr align="center">
           <td>
             <img
-              src="images/part4/bunny_2_rr.png"
+              src="images/part4/russian_roulette/bunny_2_rr.png"
               align="middle"
               width="400px"
             />
@@ -607,7 +653,7 @@ You will probably want to use the instructional machines for the above renders i
           </td>
           <td>
             <img
-              src="images/part4/bunny_3_rr.png"
+              src="images/part4/russian_roulette/bunny_3_rr.png"
               align="middle"
               width="400px"
             />
@@ -617,7 +663,15 @@ You will probably want to use the instructional machines for the above renders i
         <tr align="center">
           <td>
             <img
-              src="images/part4/bunny_100_rr.png"
+              src="images/part4/russian_roulette/bunny_4_rr.png"
+              align="middle"
+              width="400px"
+            />
+            <figcaption>max_ray_depth = 4 (CBbunny.dae)</figcaption>
+          </td>
+          <td>
+            <img
+              src="images/part4/russian_roulette/bunny_100_rr.png"
               align="middle"
               width="400px"
             />
@@ -639,28 +693,28 @@ You will probably want to use the instructional machines for the above renders i
       <table style="width: 100%">
         <tr align="center">
           <td>
-            <img src="images/part4/bunny_s1.png" align="middle" width="400px" />
+            <img src="images/part4/sample_per_pixel/bunny_s1.png" align="middle" width="400px" />
             <figcaption>1 sample per pixel (CBbunny.dae)</figcaption>
           </td>
           <td>
-            <img src="images/part4/bunny_s2.png" align="middle" width="400px" />
+            <img src="images/part4/sample_per_pixel/bunny_s2.png" align="middle" width="400px" />
             <figcaption>2 samples per pixel (CBbunny.dae)</figcaption>
           </td>
         </tr>
         <tr align="center">
           <td>
-            <img src="images/part4/bunny_s4.png" align="middle" width="400px" />
+            <img src="images/part4/sample_per_pixel/bunny_s4.png" align="middle" width="400px" />
             <figcaption>4 samples per pixel (CBbunny.dae)</figcaption>
           </td>
           <td>
-            <img src="images/part4/bunny_s8.png" align="middle" width="400px" />
+            <img src="images/part4/sample_per_pixel/bunny_s8.png" align="middle" width="400px" />
             <figcaption>8 samples per pixel (CBbunny.dae)</figcaption>
           </td>
         </tr>
         <tr align="center">
           <td>
             <img
-              src="images/part4/bunny_s16.png"
+              src="images/part4/sample_per_pixel/bunny_s16.png"
               align="middle"
               width="400px"
             />
@@ -668,7 +722,7 @@ You will probably want to use the instructional machines for the above renders i
           </td>
           <td>
             <img
-              src="images/part4/bunny_s64.png"
+              src="images/part4/sample_per_pixel/bunny_s64.png"
               align="middle"
               width="400px"
             />
@@ -678,7 +732,7 @@ You will probably want to use the instructional machines for the above renders i
         <tr align="center">
           <td>
             <img
-              src="images/part4/bunny_s1024.png"
+              src="images/part4/sample_per_pixel/bunny_s1024.png"
               align="middle"
               width="400px"
             />
@@ -730,22 +784,22 @@ Pick one scene and render it with at least 2048 samples per pixel. Show a good s
       <table style="width: 100%">
         <tr align="center">
           <td>
-            <img src="images/your_file.png" align="middle" width="400px" />
-            <figcaption>Rendered image (example1.dae)</figcaption>
+            <img src="images/part5/bunny_adaptive.png" align="middle" width="400px" />
+            <figcaption>Rendered image (CBbunny.dae)</figcaption>
           </td>
           <td>
-            <img src="images/your_file.png" align="middle" width="400px" />
-            <figcaption>Sample rate image (example1.dae)</figcaption>
+            <img src="images/part5/bunny_adaptive_rate.png" align="middle" width="400px" />
+            <figcaption>Sample rate image (CBbunny.dae)</figcaption>
           </td>
         </tr>
         <tr align="center">
           <td>
-            <img src="images/your_file.png" align="middle" width="400px" />
-            <figcaption>Rendered image (example2.dae)</figcaption>
+            <img src="images/part5/spheres_adaptive.png" align="middle" width="400px" />
+            <figcaption>Rendered image (CBspheres_lambertian.dae)</figcaption>
           </td>
           <td>
-            <img src="images/your_file.png" align="middle" width="400px" />
-            <figcaption>Sample rate image (example2.dae)</figcaption>
+            <img src="images/part5/spheres_adaptive_rate.png" align="middle" width="400px" />
+            <figcaption>Sample rate image (CBspheres_lambertian.dae)</figcaption>
           </td>
         </tr>
       </table>
