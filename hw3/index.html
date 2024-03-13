@@ -181,9 +181,39 @@ Compare rendering times on a few scenes with moderately complex geometries with 
       chose for picking the splitting point.
     </h3>
     <p>
-
+      Each BVH node consists the bounding box of its primitives as well as pointers
+      to either child BVH nodes or a list of primitives if the node is a leaf. We
+      run a recursive algorithm to generate the BVH node tree, which takes in a 
+      start and end iterator of a vector of primitive pointers and returns a node pointer.
     </p>
-
+    <p>
+      During each recursive step, we begin by generating the bounding box by 
+      iterating through all primitives and using bbox extend. Then, if the 
+      current vector of primitives is at most the max leaf size, we can 
+      make this node a leaf and return without recursion. Otherwise, we must 
+      generate an optimal partition according to our heuristic and recurse.
+    </p>
+    <p>
+      The partition we chose was based on the axis aligned planes generated
+      by the average primitive centroid position. In other words, we calculated
+      the average x, y, and z coordinates of all the centroids of all primitives
+      and tried three different partitions based on comparing the x, y, and z
+      coordinates to the average. Then, using the surface area heuristic, we
+      determined the minimum total surface area of the two bounding boxes resulting
+      from the partition. We then picked the axis that led to the minimum total
+      surface area, and performed an in-place $O(n)$ sort with two pointers to
+      make primitives on each side of the partition contiguous in the original
+      vector. We then recursed using the start and end iterators of the partitions
+      in the reordered vector. For nodes with an optimal partition that is degenerate
+      with one empty partition, we simply treated the node as a leaf, even if it had
+      more than max_leaf_size primitives.
+    </p>
+    <p>
+      We use the surface area heuristic in order to approximate the average
+      probability of any given ray hitting a bounding box, and minimize
+      this approximate probability to minimize the chance of a ray hitting
+      the bounding box and
+    </p>
     <h3>
       Show images with normal shading for a few large .dae files that you can
       only render with BVH acceleration.
@@ -373,7 +403,7 @@ Compare the results between uniform hemisphere sampling and lighting sampling in
             <img
               src="images/part3/bunny_1_1.png"
               align="middle"
-              width="200px"
+              width="400px"
             />
             <figcaption>1 Light Ray (CBbunny.dae)</figcaption>
           </td>
@@ -381,7 +411,7 @@ Compare the results between uniform hemisphere sampling and lighting sampling in
             <img
               src="images/part3/bunny_1_4.png"
               align="middle"
-              width="200px"
+              width="400px"
             />
             <figcaption>4 Light Rays (CBbunny.dae)</figcaption>
           </td>
@@ -391,7 +421,7 @@ Compare the results between uniform hemisphere sampling and lighting sampling in
             <img
               src="images/part3/bunny_1_16.png"
               align="middle"
-              width="200px"
+              width="400px"
             />
             <figcaption>16 Light Rays (CBbunny.dae)</figcaption>
           </td>
@@ -399,21 +429,31 @@ Compare the results between uniform hemisphere sampling and lighting sampling in
             <img
               src="images/part3/bunny_1_64.png"
               align="middle"
-              width="200px"
+              width="400px"
             />
             <figcaption>64 Light Rays (CBbunny.dae)</figcaption>
           </td>
         </tr>
       </table>
     </div>
-    <p>YOUR EXPLANATION GOES HERE</p>
+    <p>
+      The soft shadows are much noisier with less light rays. With more
+      light rays, the shadows are able to gray out and become more
+      accurate.
+    </p>
     <br />
 
     <h3>
       Compare the results between uniform hemisphere sampling and lighting
       sampling in a one-paragraph analysis.
     </h3>
-    <p>YOUR RESPONSE GOES HERE</p>
+    <p>
+      Lighting sampling is able to achieve greater accuracy with much
+      less rays. Comparing the pictures from the previous section,
+      with only 16 light rays lighting sampling is able to outperform
+      64 light rays and 32 samples per light source for uniform hemisphere
+      sampling in terms of noise.
+    </p>
     <br />
 
     <h2 align="middle">Part 4: Global Illumination (20 Points)</h2>
@@ -530,7 +570,14 @@ You will probably want to use the instructional machines for the above renders i
       </table>
     </div>
     <br />
-    <p>YOUR EXPLANATION GOES HERE</p>
+    <p>
+      With direct illumination we see that all objects are the color of their texture,
+      and that the bottom of objects is completely black. Otherwise, we see a 
+      fairly accurate rendering of shadows and illumination. With only indirect
+      illumination, everything is much more dim but we can see more light 
+      reflecting off the bottom of the bunny as well as the color of the walls
+      reflecting off the bunny.
+    </p>
     <br />
 
     <h3>
@@ -575,7 +622,12 @@ You will probably want to use the instructional machines for the above renders i
       </table>
     </div>
     <br />
-    <p>YOUR EXPLANATION GOES HERE</p>
+    <p>
+      On the second bounce, we see the bottom of the bunny illuminated, which has a big
+      impact on the final render. The third bounce is much more subtle so it has a 
+      much smaller effect on the render, but it does add extra color to the edges of
+      the bunny.
+    </p>
     <br />
     <h3>
       For CBbunny.dae, compare rendered views with max_ray_depth set to 0, 1, 2, 3, 4, and 5(the -m flag). 
@@ -681,7 +733,6 @@ You will probably want to use the instructional machines for the above renders i
       </table>
     </div>
     <br />
-    <p>YOUR EXPLANATION GOES HERE</p>
     <br />
 
     <h3>
@@ -742,7 +793,9 @@ You will probably want to use the instructional machines for the above renders i
       </table>
     </div>
     <br />
-    <p>YOUR EXPLANATION GOES HERE</p>
+    <p>
+      The noise decreases significantly with more samples.
+    </p>
     <br />
 
     <h2 align="middle">Part 5: Adaptive Sampling (20 Points)</h2>
