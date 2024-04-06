@@ -211,7 +211,29 @@
       final resting state on the sphere using the default ks = 5000 as well as
       with ks = 500 and ks = 50000. Describe the differences in the results.
     </h3>
-    <p>TODO</p>
+    <p>
+      The smaller spring constant has more folds and hangs much more vertically.
+      The larger spring constant is stiffer and is unable to rest as vertically.
+    </p>
+    <div align="middle">
+      <table style="width=100%">
+        <tr>
+          <td align="middle">
+            <img src="images/part3/ks_500.png" align="middle" width="300px" />
+            <figcaption>$k_s=500$</figcaption>
+          </td>
+          <td align="middle">
+            <img src="images/part3/ks_5000.png" align="middle" width="300px" />
+            <figcaption align="middle">$k_s=5000$</figcaption>
+          </td>
+          <td align="middle">
+            <img src="images/part3/ks_50000.png" align="middle" width="300px" />
+            <figcaption align="middle">$k_s=50000$</figcaption>
+          </td>
+        </tr>
+        <br>
+      </table>
+    </div>
     <br />
 
     <h3>
@@ -220,7 +242,9 @@
       creativity with the cloth! (You will need to complete the shaders portion
       first to show custom colors.)
     </h3>
-    <p>TODO</p>
+    <div align="middle">
+      <img src="images/part3/plane.png" align="middle" width="50%">
+    </div>
     <br />
 
     <h2 align="middle">Part 4: Handling self-collisions</h2>
@@ -231,14 +255,60 @@
       with the cloth at a more restful state (even if it is still slightly
       bouncy on the ground).
     </h3>
-    <p>TODO</p>
+    <div align="middle">
+      <table style="width=100%">
+        <tr>
+          <td align="middle">
+            <img src="images/part4/1.png" align="middle" width="300px" />
+          </td>
+          <td align="middle">
+            <img src="images/part4/2.png" align="middle" width="300px" />
+          </td>
+          <td align="middle">
+            <img src="images/part4/3.png" align="middle" width="300px" />
+          </td>
+        </tr>
+        <br>
+      </table>
+    </div>
     <br />
 
     <h3>
       Vary the density as well as ks and describe with words and screenshots how
       they affect the behavior of the cloth as it falls on itself.
     </h3>
-    <p>TODO</p>
+    <p>
+      Similar to part 2, we observe that a decrease in density mirrors an increase
+      in spring constant, and an increase in density mirrors a decrease in spring
+      constant. In general, for a larger spring acceleration we observe that the
+      cloth quickly unfolds itself, while for a weaker spring acceleration the cloth
+      is more erratic and struggles to unfold.
+    </p>
+    <div align="middle">
+      <table style="width=100%">
+        <tr>
+          <td align="middle">
+            <img src="images/part4/density_decrease.png" align="middle" width="400px" />
+            <figcaption>Density decrease</figcaption>
+          </td>
+          <td align="middle">
+            <img src="images/part4/density_increase.png" align="middle" width="400px" />
+            <figcaption align="middle">Density increase</figcaption>
+          </td>
+        </tr>
+        <tr>
+          <td align="middle">
+            <img src="images/part4/ks_decrease.png" align="middle" width="400px" />
+            <figcaption>$k_s$ decrease</figcaption>
+          </td>
+          <td align="middle">
+            <img src="images/part4/ks_increase.png" align="middle" width="400px" />
+            <figcaption align="middle">$k_s$ increase</figcaption>
+          </td>
+        </tr>
+        <br>
+      </table>
+    </div>
     <br />
 
     <h2 align="middle">Part 5: Shaders (longest, start early!)</h2>
