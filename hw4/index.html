@@ -24,6 +24,43 @@
       href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro"
       rel="stylesheet"
     />
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [
+            ["$", "$"],
+            ["\\(", "\\)"],
+          ],
+        },
+      };
+    </script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+    ></script>
+    <title>CS 184 Path Tracer</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro"
+      rel="stylesheet"
+    />
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [
+            ["$", "$"],
+            ["\\(", "\\)"],
+          ],
+        },
+      };
+    </script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+    ></script>
   </head>
 
   <body>
@@ -66,7 +103,12 @@
       resume by pressing P again. You can also restart the simulation at any
       time from the cloth's starting position by pressing R.
     </h3>
-    <p>TODO</p>
+    <p>
+      Below is the resting state of the cloth with default parameters.
+    </p>
+    <div align="middle">
+      <img src="images/part2/default.png" align="middle" width="50%">
+    </div>
     <br />
 
     <h3>
@@ -76,7 +118,24 @@
       show us some screenshots of those interesting differences and describe
       when they occur.
     </h3>
-    <p>TODO</p>
+    <p>
+      A smaller $k_s$ leads to more sag, and a larger $k_s$ leads to a more square cloth.
+    </p>
+    <div align="middle">
+      <table style="width=100%">
+        <tr>
+          <td align="middle">
+            <img src="images/part2/ks_decrease.png" align="middle" width="400px" />
+            <figcaption>$k_s$ decrease</figcaption>
+          </td>
+          <td align="middle">
+            <img src="images/part2/ks_increase.png" align="middle" width="400px" />
+            <figcaption align="middle">$k_s$ increase</figcaption>
+          </td>
+        </tr>
+        <br>
+      </table>
+    </div>
     <br />
 
     <h3>
@@ -84,7 +143,27 @@
       compared to the default parameters and show us some screenshots of those
       interesting differences and describe when they occur.
     </h3>
-    <p>TODO</p>
+    <p>
+      A decrease in density leads to a greater acceleration from the spring force
+      and has the same effect as a larger $k_s$. Therefore, we observe that a
+      decrease in density leads to less sag and an increase in density leads to
+      more sag.
+    </p>
+    <div align="middle">
+      <table style="width=100%">
+        <tr>
+          <td align="middle">
+            <img src="images/part2/density_decrease.png" align="middle" width="400px" />
+            <figcaption>Density decrease</figcaption>
+          </td>
+          <td align="middle">
+            <img src="images/part2/density_increase.png" align="middle" width="400px" />
+            <figcaption align="middle">Density increase</figcaption>
+          </td>
+        </tr>
+        <br>
+      </table>
+    </div>
     <br />
 
     <h3>
@@ -92,7 +171,26 @@
       compared to the default parameters and show us some screenshots of those
       interesting differences and describe when they occur.
     </h3>
-    <p>TODO</p>
+    <p>
+      A decrease in damping leads to oscillation and erratic behavior. An
+      increase in damping leads to a very slow descent which does not match
+      what is expected from gravity.
+    </p>
+    <div align="middle">
+      <table style="width=100%">
+        <tr>
+          <td align="middle">
+            <img src="images/part2/damping_decrease.png" align="middle" width="400px" />
+            <figcaption>Damping decrease</figcaption>
+          </td>
+          <td align="middle">
+            <img src="images/part2/damping_increase.png" align="middle" width="400px" />
+            <figcaption align="middle">Damping increase</figcaption>
+          </td>
+        </tr>
+        <br>
+      </table>
+    </div>
     <br />
 
     <h3>
@@ -100,7 +198,10 @@
       final resting state! If you choose to use different parameters than the
       default ones, please list them.
     </h3>
-    <p>TODO</p>
+    <p>We left default parameters.</p>
+    <div align="middle">
+      <img src="images/part2/pinned4.png" align="middle" width="50%">
+    </div>
     <br />
 
     <h2 align="middle">Part 3: Handling collisions with other objects</h2>
