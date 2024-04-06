@@ -72,9 +72,18 @@
 
     <h2 align="middle">Overview</h2>
     <p>
-      Give a high-level overview of what you implemented in this project. Think
-      about what you've built as a whole. Share your thoughts on what
-      interesting things you've learned from completing the project.
+      In this project, we implement a cloth simulation with mass-spring systems,
+      numerical integration, collision handling, and advanced shader techniques.
+      We start by constructing a mass-spring model for the cloth, connecting
+      point masses with structural, shear, and bend springs. We then simulate
+      the motion of the cloth using numerical integration -- computing the force
+      on each point mass, performing Verlet integration, and applying a maximum
+      constraint on two point masses connected via a spring. We then implement
+      collision handling with spherical and planar objects by manually bumping
+      coordinates, as well as self-collisions with the cloth mesh by maintaining
+      hash positions for a significant algorithmic speedup. Finally, we enhance
+      the rendering with advanced shader techniques like Blinn-Phong lighting,
+      texture mapping, bump mapping, displacement mapping, and mirror shading.
     </p>
 
     <h2 align="middle">Part 1: Masses and springs</h2>
@@ -82,17 +91,38 @@
     <h3>
       Take some screenshots of scene/pinned2.json from a viewing angle where you
       can clearly see the cloth wireframe to show the structure of your point
-      masses and springs.
-    </h3>
-    <p>TODO</p>
-    <br />
-
-    <h3>
-      Show us what the wireframe looks like (1) without any shearing
-      constraints, (2) with only shearing constraints, and (3) with all
+      masses and springs. Show us what the wireframe looks like (1) without any
+      shearing constraints, (2) with only shearing constraints, and (3) with all
       constraints.
     </h3>
-    <p>TODO</p>
+    <div align="middle">
+      <table style="width: 100%">
+        <tr align="center">
+          <td>
+            <img
+              src="images/part1/no-shearing.png"
+              align="middle"
+              width="400px"
+            />
+            <figcaption>No shearing</figcaption>
+          </td>
+          <td>
+            <img
+              src="images/part1/only-shearing.png"
+              align="middle"
+              width="400px"
+            />
+            <figcaption>Only shearing</figcaption>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            <img src="images/part1/all.png" align="middle" width="400px" />
+            <figcaption>All constraints</figcaption>
+          </td>
+        </tr>
+      </table>
+    </div>
     <br />
 
     <h2 align="middle">Part 2: Simulation via numerical integration</h2>
@@ -103,11 +133,9 @@
       resume by pressing P again. You can also restart the simulation at any
       time from the cloth's starting position by pressing R.
     </h3>
-    <p>
-      Below is the resting state of the cloth with default parameters.
-    </p>
+    <p>Below is the resting state of the cloth with default parameters.</p>
     <div align="middle">
-      <img src="images/part2/default.png" align="middle" width="50%">
+      <img src="images/part2/default.png" align="middle" width="50%" />
     </div>
     <br />
 
@@ -119,21 +147,30 @@
       when they occur.
     </h3>
     <p>
-      A smaller $k_s$ leads to more sag, and a larger $k_s$ leads to a more square cloth.
+      A smaller $k_s$ leads to more sag, and a larger $k_s$ leads to a more
+      square cloth.
     </p>
     <div align="middle">
       <table style="width=100%">
         <tr>
           <td align="middle">
-            <img src="images/part2/ks_decrease.png" align="middle" width="400px" />
+            <img
+              src="images/part2/ks_decrease.png"
+              align="middle"
+              width="400px"
+            />
             <figcaption>$k_s$ decrease</figcaption>
           </td>
           <td align="middle">
-            <img src="images/part2/ks_increase.png" align="middle" width="400px" />
+            <img
+              src="images/part2/ks_increase.png"
+              align="middle"
+              width="400px"
+            />
             <figcaption align="middle">$k_s$ increase</figcaption>
           </td>
         </tr>
-        <br>
+        <br />
       </table>
     </div>
     <br />
@@ -144,24 +181,32 @@
       interesting differences and describe when they occur.
     </h3>
     <p>
-      A decrease in density leads to a greater acceleration from the spring force
-      and has the same effect as a larger $k_s$. Therefore, we observe that a
-      decrease in density leads to less sag and an increase in density leads to
-      more sag.
+      A decrease in density leads to a greater acceleration from the spring
+      force and has the same effect as a larger $k_s$. Therefore, we observe
+      that a decrease in density leads to less sag and an increase in density
+      leads to more sag.
     </p>
     <div align="middle">
       <table style="width=100%">
         <tr>
           <td align="middle">
-            <img src="images/part2/density_decrease.png" align="middle" width="400px" />
+            <img
+              src="images/part2/density_decrease.png"
+              align="middle"
+              width="400px"
+            />
             <figcaption>Density decrease</figcaption>
           </td>
           <td align="middle">
-            <img src="images/part2/density_increase.png" align="middle" width="400px" />
+            <img
+              src="images/part2/density_increase.png"
+              align="middle"
+              width="400px"
+            />
             <figcaption align="middle">Density increase</figcaption>
           </td>
         </tr>
-        <br>
+        <br />
       </table>
     </div>
     <br />
@@ -173,22 +218,30 @@
     </h3>
     <p>
       A decrease in damping leads to oscillation and erratic behavior. An
-      increase in damping leads to a very slow descent which does not match
-      what is expected from gravity.
+      increase in damping leads to a very slow descent which does not match what
+      is expected from gravity.
     </p>
     <div align="middle">
       <table style="width=100%">
         <tr>
           <td align="middle">
-            <img src="images/part2/damping_decrease.png" align="middle" width="400px" />
+            <img
+              src="images/part2/damping_decrease.png"
+              align="middle"
+              width="400px"
+            />
             <figcaption>Damping decrease</figcaption>
           </td>
           <td align="middle">
-            <img src="images/part2/damping_increase.png" align="middle" width="400px" />
+            <img
+              src="images/part2/damping_increase.png"
+              align="middle"
+              width="400px"
+            />
             <figcaption align="middle">Damping increase</figcaption>
           </td>
         </tr>
-        <br>
+        <br />
       </table>
     </div>
     <br />
@@ -200,7 +253,7 @@
     </h3>
     <p>We left default parameters.</p>
     <div align="middle">
-      <img src="images/part2/pinned4.png" align="middle" width="50%">
+      <img src="images/part2/pinned4.png" align="middle" width="50%" />
     </div>
     <br />
 
@@ -231,7 +284,7 @@
             <figcaption align="middle">$k_s=50000$</figcaption>
           </td>
         </tr>
-        <br>
+        <br />
       </table>
     </div>
     <br />
@@ -243,7 +296,7 @@
       first to show custom colors.)
     </h3>
     <div align="middle">
-      <img src="images/part3/plane.png" align="middle" width="50%">
+      <img src="images/part3/plane.png" align="middle" width="50%" />
     </div>
     <br />
 
@@ -268,7 +321,7 @@
             <img src="images/part4/3.png" align="middle" width="300px" />
           </td>
         </tr>
-        <br>
+        <br />
       </table>
     </div>
     <br />
@@ -278,46 +331,82 @@
       they affect the behavior of the cloth as it falls on itself.
     </h3>
     <p>
-      Similar to part 2, we observe that a decrease in density mirrors an increase
-      in spring constant, and an increase in density mirrors a decrease in spring
-      constant. In general, for a larger spring acceleration we observe that the
-      cloth quickly unfolds itself, while for a weaker spring acceleration the cloth
-      is more erratic and struggles to unfold.
+      Similar to part 2, we observe that a decrease in density mirrors an
+      increase in spring constant, and an increase in density mirrors a decrease
+      in spring constant. In general, for a larger spring acceleration we
+      observe that the cloth quickly unfolds itself, while for a weaker spring
+      acceleration the cloth is more erratic and struggles to unfold.
     </p>
     <div align="middle">
       <table style="width=100%">
         <tr>
           <td align="middle">
-            <img src="images/part4/density_decrease.png" align="middle" width="400px" />
+            <img
+              src="images/part4/density_decrease.png"
+              align="middle"
+              width="400px"
+            />
             <figcaption>Density decrease</figcaption>
           </td>
           <td align="middle">
-            <img src="images/part4/density_increase.png" align="middle" width="400px" />
+            <img
+              src="images/part4/density_increase.png"
+              align="middle"
+              width="400px"
+            />
             <figcaption align="middle">Density increase</figcaption>
           </td>
         </tr>
         <tr>
           <td align="middle">
-            <img src="images/part4/ks_decrease.png" align="middle" width="400px" />
+            <img
+              src="images/part4/ks_decrease.png"
+              align="middle"
+              width="400px"
+            />
             <figcaption>$k_s$ decrease</figcaption>
           </td>
           <td align="middle">
-            <img src="images/part4/ks_increase.png" align="middle" width="400px" />
+            <img
+              src="images/part4/ks_increase.png"
+              align="middle"
+              width="400px"
+            />
             <figcaption align="middle">$k_s$ increase</figcaption>
           </td>
         </tr>
-        <br>
+        <br />
       </table>
     </div>
     <br />
 
-    <h2 align="middle">Part 5: Shaders (longest, start early!)</h2>
+    <h2 align="middle">Part 5: Shaders</h2>
 
     <h3>
       Explain in your own words what is a shader program and how vertex and
       fragment shaders work together to create lighting and material effects.
     </h3>
-    <p>TODO</p>
+    <p>
+      A shader program consists of two main components: the vertex shader and
+      the fragment shader. The vertex shader is responsible for processing and
+      transforming the geometric properties of each vertex, such as its
+      position, normal vector, and texture coordinates. It applies
+      transformations like model, view, and projection matrices to the vertices,
+      and also calculates values like the interpolated normals and texture
+      coordinates that will be passed on to the fragment shader.
+    </p>
+    <p>
+      The fragment shader, on the other hand, operates at the per-pixel (or
+      per-fragment) level. It takes the interpolated values computed by the
+      vertex shader as input and uses them to determine the final color of each
+      pixel. This is where lighting calculations, texture mapping, and other
+      material effects are typically implemented.
+    </p>
+    <p>
+      By combining the geometric transformations from the vertex shader and the
+      pixel-level computations in the fragment shader, complex lighting and
+      material effects can be achieved in real-time rendering.
+    </p>
     <br />
 
     <h3>
@@ -326,8 +415,65 @@
       shot only outputting the diffuse component, a screen shot only outputting
       the specular component, and one using the entire Blinn-Phong model.
     </h3>
-    <p>TODO</p>
-    <br />
+    <p>
+      The Blinn-Phong shading model is an empirical model used to approximate
+      the way light reflects off of surfaces. It is not physically accurate but
+      runs very efficiently, making it suitable for real-time applications. It
+      consists of three components:
+    </p>
+    <ul>
+      <li>
+        <b>Ambient:</b> This model is not physically based, and uses the simple
+        assumption that ambient lighting is constant. Mathematically, we
+        represent the reflected light as $L_a = k_a I_a$, where $k_a$ is a real
+        number and $I_a$ is the intensity.
+      </li>
+      <li>
+        <b>Diffuse:</b> This model is physically based. Let $\mathbf n$ denote
+        the normal vector; $\mathbf l$ denote the direction of the light, $I$
+        its illumination, and $r$ denote the distance; and $\mathbf v$ denote
+        the viewing direction. Then the reflected light is given by $L_d =k_d
+        \frac I{r^2} \max (0, \mathbf n \cdot \mathbf l)$. This model operates
+        under the assumption for diffuse surfaces that light is scattered
+        uniformly in all directions, with magnitude proportional to the cosine
+        angle.
+      </li>
+      <li>
+        <b>Specular:</b> This model is not physically based, and operates under
+        the assumption that specular lighting is most significant when we are
+        close to the mirror direction. That is, let $\mathbf h =
+        \text{normalize}(\mathbf v + \mathbf l)$ denote the bisector of $\mathbf
+        v$ and $\mathbf l$. Then $L_s = k_s \frac{I}{r^2}\max(0, \mathbf n \cdot
+        \mathbf h)^p$.
+      </li>
+    </ul>
+    <p>
+      The full model is just the sum of these components, i.e. $L = L_a + L_d +
+      L_s$. Our experiments take $k_a = 0.2$, $k_d = 1$, $k_s = 1$, and $p =
+      100$.
+    </p>
+    <div align="middle">
+      <table style="width=100%">
+        <tr align="center">
+          <td>
+            <img src="images/part5/ambient.png" align="middle" width="250px" />
+            <figcaption>Ambient only</figcaption>
+          </td>
+          <td>
+            <img src="images/part5/diffuse.png" align="middle" width="250px" />
+            <figcaption>Diffuse only</figcaption>
+          </td>
+          <td>
+            <img src="images/part5/specular.png" align="middle" width="250px" />
+            <figcaption>Specular only</figcaption>
+          </td>
+          <td>
+            <img src="images/part5/all.png" align="middle" width="250px" />
+            <figcaption>Blinn-Phong model</figcaption>
+          </td>
+        </tr>
+      </table>
+    </div>
 
     <h3>
       Show a screenshot of your texture mapping shader using your own custom
