@@ -333,7 +333,9 @@
       Show a screenshot of your texture mapping shader using your own custom
       texture by modifying the textures in /textures/.
     </h3>
-    <p>TODO</p>
+    <div align="middle">
+      <img src="images/part5/papaya.png" align="middle" width="50%">
+    </div>
     <br />
 
     <h3>
@@ -346,13 +348,79 @@
       changing the sphere mesh's coarseness by using -o 16 -a 16 and then -o 128
       -a 128.
     </h3>
-    <p>TODO</p>
+    <p>
+      The difference is clearest on the border of the sphere within the image. 
+      For bump mapping, we can clearly observe that the mesh of the sphere is 
+      unchanged, while for displacement mapping we observe some random changes
+      in position for vertices on the border. We can also observe some irregularities
+      within the rectangles on the displacement mapping sphere that are not
+      there on the bump mapping version. However, both have fairly accurate
+      lighting, particularly within the detail of the specular highlight.
+    </p>
+    <div align="middle">
+      <table style="width=100%">
+        <tr>
+          <td align="middle">
+            <img src="images/part5/bump_cloth.png" align="middle" width="400px" />
+            <figcaption>Cloth Bump Mapping</figcaption>
+          </td>
+          <td align="middle">
+            <img src="images/part5/bump_sphere.png" align="middle" width="400px" />
+            <figcaption align="middle">Sphere Bump Mapping</figcaption>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div align="middle">
+      <img src="images/part5/displacement_sphere.png" align="middle" width="50%">
+      <figcaption align="middle">Sphere Displacement Mapping</figcaption>
+    </div>
+    <p>
+      We observe that for the same parameters, changing the coarseness of the
+      sphere has little effect on bump mapping. However, we observe that a 
+      more coarse sphere decreases the effectiveness of displacement mapping.
+    </p>
+    <div align="middle">
+      <table style="width=100%">
+        <tr>
+          <td align="middle">
+            <img src="images/part5/bump_16.png" align="middle" width="400px" />
+            <figcaption>Sphere Bump Mapping (More Coarse)</figcaption>
+          </td>
+          <td align="middle">
+            <img src="images/part5/displacement_16.png" align="middle" width="400px" />
+            <figcaption align="middle">Sphere Displacement Mapping (More Coarse)</figcaption>
+          </td>
+        </tr>
+        <tr>
+          <td align="middle">
+            <img src="images/part5/bump_128.png" align="middle" width="400px" />
+            <figcaption>Sphere Bump Mapping (Less Coarse)</figcaption>
+          </td>
+          <td align="middle">
+            <img src="images/part5/displacement_128.png" align="middle" width="400px" />
+            <figcaption align="middle">Sphere Displacement Mapping (Less Coarse)</figcaption>
+          </td>
+        </tr>
+      </table>
+    </div>
     <br />
 
     <h3>
       Show a screenshot of your mirror shader on the cloth and on the sphere.
     </h3>
-    <p>TODO</p>
+    <div align="middle">
+      <table style="width=100%">
+        <tr>
+          <td align="middle">
+            <img src="images/part5/mirror_cloth.png" align="middle" width="400px" />
+          </td>
+          <td align="middle">
+            <img src="images/part5/mirror_sphere.png" align="middle" width="400px" />
+          </td>
+        </tr>
+      </table>
+    </div>
     <br />
   </body>
 </html>
